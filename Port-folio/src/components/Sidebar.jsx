@@ -1,4 +1,5 @@
 import React from "react";
+
 import { FaHome, FaUser, FaProjectDiagram, FaTools, FaEnvelope, FaMoon, FaSun } from "react-icons/fa";
 
 export default function Sidebar({ darkMode, setDarkMode, setPage }) {
