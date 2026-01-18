@@ -94,6 +94,12 @@ export default function Projects() {
           </div>
         ))}
       </div>
+
+      <div className="flex justify-center mt-12">
+        <button className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200">
+          View All Projects
+        </button>
+      </div>
     </section>
   );
 }

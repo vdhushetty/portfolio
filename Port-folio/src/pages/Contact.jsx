@@ -1,20 +1,67 @@
 // src/pages/Contact.jsx
 import React, { useState } from "react";
-import { FaEnvelope, FaPhone, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setStatus("sending");
-    setTimeout(() => {
-      setStatus("success");
-      setForm({ name: "", email: "", message: "" });
+    
+    try {
+      const webhookUrl = "https://discord.com/api/webhooks/1462281263682687018/CjwSrLr1i7bV0AuFsaKut8TXf1Z0tmU5Jl8A7DpJUK8Mi2ECXshSk9vOEieHQj3mfVqs";
+      
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: `**New Contact Form Submission**`,
+          embeds: [
+            {
+              title: "Contact Form Message",
+              color: 4169E1,
+              fields: [
+                {
+                  name: "Name",
+                  value: form.name,
+                  inline: true,
+                },
+                {
+                  name: "Email",
+                  value: form.email,
+                  inline: true,
+                },
+                {
+                  name: "Message",
+                  value: form.message,
+                  inline: false,
+                },
+              ],
+              timestamp: new Date(),
+            },
+          ],
+        }),
+      });
+      
+      if (response.ok) {
+        setStatus("success");
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 3000);
+      } else {
+        setStatus("error");
+        setTimeout(() => setStatus("idle"), 3000);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setStatus("error");
       setTimeout(() => setStatus("idle"), 3000);
-    }, 600);
+    }
   };
+
 
   return (
     <section id="contact" className="w-full">
@@ -37,25 +84,10 @@ export default function Contact() {
                 <div>
                   <h4 className="font-semibold text-black mb-1">Email</h4>
                   <a
-                    href="mailto:your@email.com"
+                    href="mailto:venkatsaidhushetty@gmail.com"
                     className="text-gray-700 hover:text-blue-600 transition"
                   >
-                    your.email@example.com
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="glossy-button p-6 rounded-xl hover:shadow-lg transition-all">
-              <div className="flex items-start">
-                <FaPhone className="text-3xl text-blue-600 mr-4 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-black mb-1">Phone</h4>
-                  <a
-                    href="tel:+1234567890"
-                    className="text-gray-700 hover:text-blue-600 transition"
-                  >
-                    +1 (234) 567-890
+                    venkatsaidhushetty@gmail.com
                   </a>
                 </div>
               </div>
@@ -66,13 +98,17 @@ export default function Contact() {
                 <h4 className="font-semibold text-black mb-4">Connect With Me</h4>
                 <div className="flex gap-4">
                   <a
-                    href="#"
+                    href="https://www.linkedin.com/in/vdhushetty/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-110 duration-200"
                   >
                     <FaLinkedin className="text-xl" />
                   </a>
                   <a
-                    href="#"
+                    href="https://github.com/vdhushetty"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition transform hover:scale-110 duration-200"
                   >
                     <FaGithub className="text-xl" />
@@ -129,6 +165,11 @@ export default function Contact() {
             {status === "success" && (
               <div className="p-4 bg-green-100 border border-green-400 text-green-800 rounded-xl text-center font-semibold">
                 ✓ Message sent successfully!
+              </div>
+            )}
+            {status === "error" && (
+              <div className="p-4 bg-red-100 border border-red-400 text-red-800 rounded-xl text-center font-semibold">
+                ✗ Failed to send message. Please try again.
               </div>
             )}
           </form>

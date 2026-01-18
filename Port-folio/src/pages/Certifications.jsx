@@ -3,6 +3,12 @@ import { FaCertificate, FaExternalLinkAlt } from "react-icons/fa";
 
 const certifications = [
   {
+    name: "Microsoft Certified: Azure AI Engineer Associate",
+    date: "2025",
+    image: "/Images/microsoft-certified-associate-badge.png",
+    link: "https://learn.microsoft.com/en-us/users/venkatsaidhushetty-7235/transcript/7oj29cq635nwl95",
+  },
+  {
     name: "Databricks Data Engineer Associate",
     date: "April 2024",
     image: "/Images/associate-badge-de.png",
@@ -11,7 +17,7 @@ const certifications = [
   {
     name: "Microsoft Azure Data Scientist Associate DP-100",
     date: "December 2023",
-    image: "/Images/microsoft-certified-associate-badge.svg",
+    image: "/Images/microsoft-certified-associate-badge.png",
     link: "https://learn.microsoft.com/en-us/users/venkatsaidhushetty-2506/credentials/82571ccd8369da80?ref=https%3A%2F%2Fwww.linkedin.com%2F",
   },
 ];

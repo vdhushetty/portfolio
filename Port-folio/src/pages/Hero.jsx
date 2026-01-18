@@ -1,6 +1,11 @@
 import React from "react";
+import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 
 export default function Hero() {
+  const handleLinkedIn = () => window.open("https://www.linkedin.com/in/vdhushetty/", "_blank");
+  const handleGitHub = () => window.open("https://github.com/vdhushetty", "_blank");
+  const handleEmail = () => window.location.href = "mailto:venkatsaidhushetty@gmail.com";
+
   return (
     <section id="home" className="relative overflow-hidden">
       {/* soft animated gradient */}
@@ -32,6 +37,27 @@ export default function Hero() {
           >
             Contact Me
           </a>
+          <button
+            onClick={handleLinkedIn}
+            className="inline-flex items-center justify-center p-2.5 rounded-2xl bg-blue-600 text-white shadow hover:shadow-md hover:bg-blue-700 active:scale-[0.98] transition cursor-pointer"
+            title="LinkedIn"
+          >
+            <FaLinkedin className="text-lg" />
+          </button>
+          <button
+            onClick={handleGitHub}
+            className="inline-flex items-center justify-center p-2.5 rounded-2xl bg-gray-800 text-white shadow hover:shadow-md hover:bg-gray-900 active:scale-[0.98] transition cursor-pointer"
+            title="GitHub"
+          >
+            <FaGithub className="text-lg" />
+          </button>
+          <button
+            onClick={handleEmail}
+            className="inline-flex items-center justify-center p-2.5 rounded-2xl bg-red-600 text-white shadow hover:shadow-md hover:bg-red-700 active:scale-[0.98] transition cursor-pointer"
+            title="Email"
+          >
+            <FaEnvelope className="text-lg" />
+          </button>
         </div>
       </div>
 

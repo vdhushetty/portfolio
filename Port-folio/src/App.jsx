@@ -12,6 +12,7 @@ import Certifications from "./pages/Certifications";
 import Contact from "./pages/Contact";
 import Education from "./pages/Education";
 import Work from "./pages/Work";
+import Blogs from "./pages/Blogs";
 import Footer from "./pages/Footer";
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "about", "projects", "skills", "certifications", "education", "work", "contact"];
+      const sections = ["home", "about", "projects", "skills", "blogs", "certifications", "education", "work", "contact"];
       let current = "home";
 
       for (const section of sections) {
@@ -80,13 +81,13 @@ function App() {
               </div>
 
               <div className="flex gap-6 text-2xl">
-                <a href="#" className="text-blue-600 hover:scale-110 transition-transform duration-200">
+                <a href="https://www.linkedin.com/in/vdhushetty/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:scale-110 transition-transform duration-200">
                   <FaLinkedin />
                 </a>
-                <a href="#" className="text-gray-700 hover:scale-110 transition-transform duration-200">
+                <a href="https://github.com/vdhushetty" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:scale-110 transition-transform duration-200">
                   <FaGithub />
                 </a>
-                <a href="mailto:your@email.com" className="text-red-500 hover:scale-110 transition-transform duration-200">
+                <a href="mailto:venkatsaidhushetty@gmail.com" className="text-red-500 hover:scale-110 transition-transform duration-200">
                   <FaEnvelope />
                 </a>
               </div>
@@ -154,8 +155,15 @@ function App() {
         </div>
       </section>
 
+      {/* Blogs Section */}
+      <section id="blogs" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+        <div className="max-w-6xl w-full">
+          <Blogs />
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-4xl w-full">
           <Contact />
         </div>
