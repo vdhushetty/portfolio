@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import TypewriterText from "./components/TypewriterText";
 import { FaGithub, FaLinkedin, FaEnvelope, FaExternalLinkAlt } from "react-icons/fa";
@@ -8,6 +9,8 @@ import CardsSection from "./components/CardsSection";
 import About from "./pages/About";
 import Skills from "./pages/Skills";
 import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import BlogDetail from "./pages/BlogDetail";
 import Certifications from "./pages/Certifications";
 import Contact from "./pages/Contact";
 import Education from "./pages/Education";
@@ -17,10 +20,15 @@ import Footer from "./pages/Footer";
 
 function App() {
   const [activeSection, setActiveSection] = useState("home");
+  const location = useLocation();
+
+  // Check if we're on a project detail page or blog detail page
+  const isProjectDetail = location.pathname.startsWith("/project/");
+  const isBlogDetail = location.pathname.startsWith("/blog/");
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "about", "projects", "skills", "blogs", "certifications", "education", "work", "contact"];
+      const sections = ["home", "about", "skills", "certifications", "projects", "work", "education", "blogs", "contact"];
       let current = "home";
 
       for (const section of sections) {
@@ -43,6 +51,21 @@ function App() {
     }
   };
 
+  // Render project detail page or blog detail page
+  if (isProjectDetail || isBlogDetail) {
+    return (
+      <>
+        <Navigation activeSection={activeSection} />
+        <Routes>
+          <Route path="/project/:id" element={<ProjectDetail />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
+        </Routes>
+        <Footer />
+      </>
+    );
+  }
+
+  // Render main portfolio page
   return (
     <div className="min-h-screen bg-white text-black">
       <Navigation activeSection={activeSection} />
@@ -71,6 +94,12 @@ function App() {
                   className="glossy-button px-8 py-3 bg-blue-600 text-black font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-lg"
                 >
                   View My Work
+                </button>
+                <button
+                  onClick={() => scrollToSection("blogs")}
+                  className="glossy-button px-8 py-3 bg-blue-600 text-black font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-lg"
+                >
+                  Read My Blogs
                 </button>
                 <button
                   onClick={() => scrollToSection("contact")}
@@ -120,6 +149,20 @@ function App() {
         </div>
       </section>
 
+      {/* Skills Section */}
+      <section id="skills" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
+        <div className="max-w-6xl w-full">
+          <Skills />
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section id="certifications" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+        <div className="max-w-6xl w-full">
+          <Certifications />
+        </div>
+      </section>
+
       {/* Projects Section */}
       <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl w-full">
@@ -127,31 +170,17 @@ function App() {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      {/* Work Section */}
+      <section id="work" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
         <div className="max-w-6xl w-full">
-          <Skills />
-        </div>
-      </section>
-
-      {/* Certifications Section */}
-      <section id="certifications" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
-        <div className="max-w-6xl w-full">
-          <Certifications />
+          <Work />
         </div>
       </section>
 
       {/* Education Section */}
-      <section id="education" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      <section id="education" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl w-full">
           <Education />
-        </div>
-      </section>
-
-      {/* Work Section */}
-      <section id="work" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
-        <div className="max-w-6xl w-full">
-          <Work />
         </div>
       </section>
 
@@ -163,7 +192,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
+      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
         <div className="max-w-4xl w-full">
           <Contact />
         </div>
