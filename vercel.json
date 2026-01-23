@@ -3,6 +3,8 @@
   "outputDirectory": "Port-folio/dist",
   "framework": "vite",
   "rewrites": [
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/Images/(.*)", "destination": "/Images/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
