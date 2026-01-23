@@ -1,46 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-
-const projects = [
-  {
-    title: "Data Pipeline Automation",
-    description: "Scalable ETL pipeline using Apache Spark and Databricks",
-    tech: ["Python", "Spark", "Databricks", "SQL"],
-    image: "https://via.placeholder.com/300x200?text=Data+Pipeline",
-  },
-  {
-    title: "BI Dashboard System",
-    description: "Interactive Power BI dashboards with DAX calculations",
-    tech: ["Power BI", "DAX", "SQL Server"],
-    image: "https://via.placeholder.com/300x200?text=BI+Dashboard",
-  },
-  {
-    title: "ML Recommendation Engine",
-    description: "Machine learning model for personalized recommendations",
-    tech: ["Python", "TensorFlow", "PyTorch"],
-    image: "https://via.placeholder.com/300x200?text=ML+Engine",
-  },
-  {
-    title: "Cloud Data Warehouse",
-    description: "Snowflake data warehouse with cloud migration",
-    tech: ["Snowflake", "AWS", "Python"],
-    image: "https://via.placeholder.com/300x200?text=Data+Warehouse",
-  },
-  {
-    title: "Real-time Analytics Platform",
-    description: "Kafka-based streaming analytics platform",
-    tech: ["Kafka", "Spark Streaming", "Azure"],
-    image: "https://via.placeholder.com/300x200?text=Analytics",
-  },
-  {
-    title: "NLP Text Analysis",
-    description: "Deep learning NLP model using Transformer architectures",
-    tech: ["Hugging Face", "PyTorch", "Python"],
-    image: "https://via.placeholder.com/300x200?text=NLP",
-  },
-];
+import { projectsData } from "./projectsData";
 
 export default function Projects() {
+  const navigate = useNavigate();
+
+  const handleProjectClick = (projectId) => {
+    navigate(`/project/${projectId}`);
+  };
+
   return (
     <section id="projects" className="w-full">
       <div className="mb-12">
@@ -49,18 +18,26 @@ export default function Projects() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
+        {projectsData.map((project) => (
           <div
-            key={index}
-            className="glossy-button overflow-hidden rounded-2xl hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
+            key={project.id}
+            className="glossy-button overflow-hidden rounded-2xl hover:shadow-2xl transition-all duration-300 group flex flex-col h-full cursor-pointer"
+            onClick={() => handleProjectClick(project.id)}
           >
-            <div className="relative overflow-hidden h-48 bg-gradient-to-br from-blue-400 to-blue-600">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+            <div className="relative overflow-hidden h-48 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+              {project.logo ? (
+                <img
+                  src={project.logo}
+                  alt={project.title}
+                  className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                />
+              ) : (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+              )}
             </div>
 
             <div className="p-6 flex-1 flex flex-col">
@@ -81,14 +58,30 @@ export default function Projects() {
               </div>
 
               <div className="flex gap-4">
-                <button className="flex-1 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
-                  <FaExternalLinkAlt className="text-sm" />
-                  Live
-                </button>
-                <button className="flex-1 px-4 py-2 bg-gray-200 text-black font-semibold rounded-lg hover:bg-gray-300 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
-                  <FaGithub className="text-sm" />
-                  Code
-                </button>
+                {project.liveUrl && (
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(project.liveUrl, "_blank");
+                    }}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    <FaExternalLinkAlt className="text-sm" />
+                    Live
+                  </button>
+                )}
+                {project.githubUrl && (
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(project.githubUrl, "_blank");
+                    }}
+                    className={`px-4 py-2 bg-gray-200 text-black font-semibold rounded-lg hover:bg-gray-300 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 ${!project.liveUrl ? "flex-1" : ""}`}
+                  >
+                    <FaGithub className="text-sm" />
+                    Code
+                  </button>
+                )}
               </div>
             </div>
           </div>
