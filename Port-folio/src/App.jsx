@@ -73,7 +73,7 @@ function App() {
       {/* Home Section */}
       <section id="home" className="min-h-screen flex items-center justify-center pt-20 px-4 bg-gradient-to-br from-white via-blue-50 to-white">
         <div className="max-w-6xl w-full">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="flex flex-col justify-center">
               <div className="mb-8">
                 <h1 className="text-6xl md:text-7xl font-bold mb-4">
@@ -88,7 +88,7 @@ function App() {
                 I build scalable data pipelines, insightful dashboards, and machine learning solutions to turn data into business value. With 8+ years of experience in big data, cloud platforms, and AI.
               </p>
 
-              <div className="flex flex-wrap gap-4 mb-12">
+              <div className="flex flex-wrap gap-4 mb-8">
                 <button
                   onClick={() => scrollToSection("projects")}
                   className="glossy-button px-8 py-3 bg-blue-600 text-black font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-lg"
@@ -143,42 +143,42 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      <section id="about" className="min-h-screen flex items-center justify-center py-12 px-4 bg-white">
         <div className="max-w-4xl w-full">
           <About />
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
+      <section id="skills" className="min-h-screen flex items-center justify-center py-12 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl w-full">
           <Skills />
         </div>
       </section>
 
       {/* Certifications Section */}
-      <section id="certifications" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      <section id="certifications" className="min-h-screen flex items-center justify-center py-12 px-4 bg-white">
         <div className="max-w-6xl w-full">
           <Certifications />
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
+      <section id="projects" className="min-h-screen flex items-center justify-center py-12 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl w-full">
           <Projects />
         </div>
       </section>
 
       {/* Work Section */}
-      <section id="work" className="min-h-screen flex items-center justify-center py-20 px-4 bg-white">
+      <section id="work" className="min-h-screen flex items-center justify-center py-12 px-4 bg-white">
         <div className="max-w-6xl w-full">
           <Work />
         </div>
       </section>
 
       {/* Education Section */}
-      <section id="education" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-blue-50 to-white">
+      <section id="education" className="min-h-screen flex items-center justify-center py-12 px-4 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl w-full">
           <Education />
         </div>

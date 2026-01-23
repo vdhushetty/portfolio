@@ -12,12 +12,12 @@ export default function Blogs() {
 
   return (
     <section id="blogs" className="w-full">
-      <div className="mb-12">
+      <div className="mb-8">
         <h2 className="text-5xl font-bold mb-4 text-black">Blog Posts</h2>
         <div className="h-1 w-20 bg-blue-600 rounded-full"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {displayedBlogs.map((blog) => (
           <article
             key={blog.id}
@@ -43,7 +43,7 @@ export default function Blogs() {
 
               <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-2">{blog.excerpt}</p>
 
-              <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-4">
+              <div className="flex flex-wrap gap-2 text-sm text-gray-500 mb-4">
                 <div className="flex items-center gap-1">
                   <FaUser className="text-xs" />
                   <span>{blog.author}</span>
@@ -65,7 +65,7 @@ export default function Blogs() {
       </div>
 
       {!showAll && (
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-8">
           <button
             onClick={() => setShowAll(true)}
             className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200"
@@ -76,7 +76,7 @@ export default function Blogs() {
       )}
 
       {showAll && (
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-8">
           <button
             onClick={() => setShowAll(false)}
             className="px-8 py-3 bg-gray-300 text-black font-semibold rounded-xl hover:bg-gray-400 active:scale-95 transition-all duration-200"

@@ -26,14 +26,14 @@ export default function CardsSection({ scrollTo }) {
 
   return (
     <section className="w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {cards.map((card) => (
           <button
             key={card.title}
             onClick={() => handleClick(card.page)}
             className="glossy-button flex flex-col items-center justify-center p-8 rounded-2xl transition-all duration-300 hover:shadow-xl active:scale-95 group"
           >
-            <div className="text-5xl mb-4 text-blue-600 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-5xl mb-2 text-blue-600 group-hover:scale-110 transition-transform duration-300">
               {card.icon}
             </div>
             <span className="text-lg font-semibold text-black text-center">{card.title}</span>

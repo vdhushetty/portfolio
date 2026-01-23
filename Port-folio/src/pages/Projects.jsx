@@ -12,12 +12,12 @@ export default function Projects() {
 
   return (
     <section id="projects" className="w-full">
-      <div className="mb-12">
+      <div className="mb-8">
         <h2 className="text-5xl font-bold mb-4 text-black">Featured Projects</h2>
         <div className="h-1 w-20 bg-blue-600 rounded-full"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projectsData.map((project) => (
           <div
             key={project.id}
@@ -46,7 +46,7 @@ export default function Projects() {
               </h3>
               <p className="text-gray-600 text-sm mb-4 flex-1">{project.description}</p>
 
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {project.tech.map((tech, i) => (
                   <span
                     key={i}
@@ -88,7 +88,7 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="flex justify-center mt-12">
+      <div className="flex justify-center mt-8">
         <button className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all duration-200">
           View All Projects
         </button>
