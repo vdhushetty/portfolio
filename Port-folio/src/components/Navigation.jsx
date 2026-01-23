@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { FaHome, FaUser, FaProjectDiagram, FaCogs, FaChartBar, FaEnvelope, FaGraduationCap, FaBriefcase } from "react-icons/fa";
+import { FaHome, FaUser, FaProjectDiagram, FaCogs, FaChartBar, FaEnvelope, FaGraduationCap, FaBriefcase, FaPen } from "react-icons/fa";
 
 const navItems = [
   { icon: <FaHome />, label: "Home", id: "home" },
   { icon: <FaUser />, label: "About", id: "about" },
-  { icon: <FaProjectDiagram />, label: "Projects", id: "projects" },
   { icon: <FaCogs />, label: "Skills", id: "skills" },
   { icon: <FaChartBar />, label: "Certifications", id: "certifications" },
-  { icon: <FaGraduationCap />, label: "Education", id: "education" },
+  { icon: <FaProjectDiagram />, label: "Projects", id: "projects" },
   { icon: <FaBriefcase />, label: "Work", id: "work" },
+  { icon: <FaGraduationCap />, label: "Education", id: "education" },
+  { icon: <FaPen />, label: "Blogs", id: "blogs" },
   { icon: <FaEnvelope />, label: "Contact", id: "contact" },
 ];
 

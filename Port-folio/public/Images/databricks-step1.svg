@@ -1,0 +1,5 @@
+<svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- This is a placeholder SVG. Replace with actual image -->
+  <rect width="1000" height="800" fill="#f0f0f0"/>
+  <text x="500" y="400" font-size="24" text-anchor="middle" fill="#666">Step 1: Data Replication</text>
+</svg>

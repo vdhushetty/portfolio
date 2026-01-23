@@ -1,13 +1,14 @@
 import React from "react";
-import { FaUser, FaProjectDiagram, FaBook, FaEnvelope, FaCogs, FaChartBar, FaGraduationCap, FaBriefcase } from "react-icons/fa";
+import { FaUser, FaProjectDiagram, FaBook, FaEnvelope, FaCogs, FaChartBar, FaGraduationCap, FaBriefcase, FaPen } from "react-icons/fa";
 
 const cards = [
   { title: "About Me", icon: <FaUser />, page: "about" },
   { title: "Skills", icon: <FaCogs />, page: "skills" },
   { title: "Certifications", icon: <FaChartBar />, page: "certifications" },
   { title: "Projects", icon: <FaProjectDiagram />, page: "projects" },
-  { title: "Education", icon: <FaGraduationCap />, page: "education" },
   { title: "Work Experience", icon: <FaBriefcase />, page: "work" },
+  { title: "Education", icon: <FaGraduationCap />, page: "education" },
+  { title: "Blogs", icon: <FaPen />, page: "blogs" },
   { title: "Contact", icon: <FaEnvelope />, page: "contact" },
 ];
 
