@@ -1,7 +1,11 @@
 {
-  "buildCommand": "cd Port-folio && npm run build",
-  "outputDirectory": "Port-folio/dist",
-  "framework": "vite",
+  "builds": [
+    {
+      "src": "Port-folio/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
   "rewrites": [
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
     { "source": "/Images/(.*)", "destination": "/Images/$1" },
