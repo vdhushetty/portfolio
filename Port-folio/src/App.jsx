@@ -85,7 +85,7 @@ function App() {
               </div>
 
               <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
-                I build scalable data pipelines, insightful dashboards, and machine learning solutions to turn data into business value. With 8+ years of experience in big data, cloud platforms, and AI.
+                I build scalable data pipelines, insightful dashboards, and machine learning solutions to turn data into business value. With 5+ years of experience in big data, cloud platforms, and AI.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-8">
