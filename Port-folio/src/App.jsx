@@ -126,7 +126,7 @@ function App() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl blur-xl opacity-30"></div>
                 <img
-                  src="/Images/mypic.png"
+                  src="/Images/mypic.jpg"
                   alt="Profile"
                   className="relative w-full h-auto rounded-3xl shadow-2xl border-4 border-white"
                 />
