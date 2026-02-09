@@ -21,7 +21,7 @@ const workExperience = [
     title: "Data Engineer",
     company: "ThingBlu",
     type: "Contract",
-    period: "January 2020 – July 2021",
+    period: "January 2017 – July 2021",
     achievements: [
       "Developed a data warehouse for agritech data using dataflows in Synapse Analytics with STAR dimensional modeling.",
       "Created and optimized data loading processes within Azure Synapse Analytics with efficient, incremental loading.",
