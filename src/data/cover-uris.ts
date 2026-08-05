@@ -1,4 +1,4 @@
-/** Generate project covers as data URIs (no public/ files required). */
+/** Generate project covers / diagram assets as data URIs (no public/ required). */
 
 const COVER_META: Record<string, { title: string; subtitle: string }> = {
   "arm-fkik.svg": { title: "5-DOF Arm Kinematics", subtitle: "MATLAB FK / IK" },
@@ -45,6 +45,10 @@ function escapeXml(s: string): string {
     .replace(/>/g, "\u0026gt;");
 }
 
+function toDataUri(svg: string): string {
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 function makeCover(key: string): string {
   const meta = COVER_META[key] ?? {
     title: key.replace(/\.svg$/i, "").replace(/-/g, " "),
@@ -78,14 +82,42 @@ function makeCover(key: string): string {
     `<text x="80" y="400" fill="#e8edf7" font-family="ui-sans-serif,system-ui" font-size="28" font-weight="700">${title}</text>` +
     `<text x="80" y="480" fill="#8b95a8" font-family="ui-sans-serif,system-ui" font-size="16">${subtitle}</text>` +
     `</svg>`;
-  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  return toDataUri(svg);
 }
 
-/** Resolve project cover path to an inlined data URI. */
+/** Architecture / diagram placeholder for raster asset paths. */
+function makeDiagram(key: string): string {
+  const label = escapeXml(
+    key
+      .replace(/\.(png|jpe?g|webp|gif|svg)$/i, "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+      .slice(0, 48),
+  );
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">` +
+    `<rect width="960" height="540" fill="#0d111a"/>` +
+    `<rect x="40" y="40" width="880" height="460" rx="16" fill="#121826" stroke="#1e293b"/>` +
+    `<rect x="80" y="120" width="180" height="80" rx="10" fill="#0f172a" stroke="#22d3ee" stroke-opacity="0.5"/>` +
+    `<rect x="390" y="120" width="180" height="80" rx="10" fill="#0f172a" stroke="#22d3ee" stroke-opacity="0.5"/>` +
+    `<rect x="700" y="120" width="180" height="80" rx="10" fill="#0f172a" stroke="#22d3ee" stroke-opacity="0.5"/>` +
+    `<path d="M260 160H390M570 160H700" stroke="#22d3ee" stroke-width="2" stroke-opacity="0.55"/>` +
+    `<rect x="230" y="280" width="500" height="120" rx="12" fill="#0f172a" stroke="#22d3ee" stroke-opacity="0.35"/>` +
+    `<text x="480" y="340" text-anchor="middle" fill="#e8edf7" font-family="ui-sans-serif,system-ui" font-size="22" font-weight="600">${label}</text>` +
+    `<text x="480" y="375" text-anchor="middle" fill="#8b95a8" font-family="ui-sans-serif,system-ui" font-size="14">Architecture diagram</text>` +
+    `</svg>`;
+  return toDataUri(svg);
+}
+
+/** Resolve project cover / visual asset path to an inlined data URI. */
 export function coverUri(path: string | undefined | null): string | undefined {
   if (!path) return undefined;
   if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }
-  return makeCover(basename(path));
+  const key = basename(path);
+  if (/\.(png|jpe?g|webp|gif)$/i.test(key)) {
+    return makeDiagram(key);
+  }
+  return makeCover(key);
 }
