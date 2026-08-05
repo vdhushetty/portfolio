@@ -87,9 +87,25 @@ function HomePage() {
               </div>
               <ul className="space-y-3">
                 {certifications.map((c) => (
-                  <li key={c.name} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="text-fg">{c.name}</span>
-                    <span className="shrink-0 font-mono text-xs text-muted">{c.date}</span>
+                  <li key={c.name}>
+                    <a
+                      href={c.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-3 rounded-xl border border-border bg-bg-elevated/60 p-3 no-underline transition-colors hover:border-primary/40"
+                    >
+                      <img
+                        src={c.image}
+                        alt=""
+                        className="h-11 w-11 shrink-0 rounded-lg object-contain"
+                        width={44}
+                        height={44}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium leading-snug text-fg">{c.name}</p>
+                        <p className="mt-0.5 font-mono text-xs text-muted">{c.date}</p>
+                      </div>
+                    </a>
                   </li>
                 ))}
               </ul>
