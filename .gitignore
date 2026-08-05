@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+.vercel
+.output
+dist
+.env
+.env.*
+*.log
+/tmp
+screenshots
+artifacts
+.pglite

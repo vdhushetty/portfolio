@@ -1,9 +1,6 @@
 {
-  "buildCommand": "cd Port-folio && npm install && npm run build",
-  "outputDirectory": "Port-folio/dist",
-  "installCommand": "npm install && cd Port-folio && npm install",
-  "env": {},
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "rm -rf node_modules && npm install",
+  "buildCommand": "npm run build",
+  "framework": null
 }
