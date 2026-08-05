@@ -1,0 +1,17 @@
+node_modules
+dist
+.output
+.vercel
+.DS_Store
+*.log
+.env
+.env.*
+screenshots
+artifacts
+*.tar.gz
+.write-access-test
+.tanstack
+.grok
+AGENTS.md
+AGENTS.project.md
+startup.sh
