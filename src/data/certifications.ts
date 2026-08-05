@@ -5,8 +5,20 @@ export type Certification = {
   link: string;
 };
 
-const MS_BADGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='16' fill='%230078D4'/%3E%3Ctext x='60' y='55' text-anchor='middle' fill='white' font-size='14' font-weight='700' font-family='sans-serif'%3EAzure%3C/text%3E%3Ctext x='60' y='78' text-anchor='middle' fill='%23BFDBFE' font-size='11' font-family='sans-serif'%3EAssociate%3C/text%3E%3C/svg%3E";
-const DB_BADGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='16' fill='%23FF3621'/%3E%3Ctext x='60' y='55' text-anchor='middle' fill='white' font-size='12' font-weight='700' font-family='sans-serif'%3EDatabricks%3C/text%3E%3Ctext x='60' y='78' text-anchor='middle' fill='%23FED7AA' font-size='11' font-family='sans-serif'%3EAssociate%3C/text%3E%3C/svg%3E";
+function badge(bg: string, line1: string, line2: string): string {
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">` +
+    `<rect width="120" height="120" rx="18" fill="${bg}"/>` +
+    `<circle cx="60" cy="42" r="18" fill="none" stroke="#fff" stroke-width="3" opacity="0.9"/>` +
+    `<path d="M60 30v12l8 5" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>` +
+    `<text x="60" y="78" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="ui-sans-serif,system-ui,sans-serif">${line1}</text>` +
+    `<text x="60" y="96" text-anchor="middle" fill="#ffffffcc" font-size="11" font-family="ui-sans-serif,system-ui,sans-serif">${line2}</text>` +
+    `</svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+const MS_BADGE = badge("#0078D4", "Azure", "Associate");
+const DB_BADGE = badge("#FF3621", "Databricks", "Associate");
 
 export const certifications: Certification[] = [
   {
