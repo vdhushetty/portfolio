@@ -1,52 +1,49 @@
-import { Link } from "@tanstack/react-router";
-import { Github, Linkedin, Mail } from "lucide-react";
-import { profile } from "@/data/profile";
+import { Link } from '@tanstack/react-router'
+import { profile } from '@/data/profile'
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-bg-elevated">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <footer className="border-t border-border bg-card/40">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
-          <p className="text-sm font-semibold text-fg">{profile.name}</p>
-          <p className="mt-1 text-sm text-muted">{profile.title}</p>
+          <p className="font-display text-sm font-semibold text-foreground">
+            {profile.name}
+          </p>
+          <p className="mt-1 max-w-md text-sm text-muted-foreground">
+            Building reliable data platforms and thoughtful interfaces.
+          </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
           <a
-            href={profile.github}
+            href={profile.links.github}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:border-primary/40 hover:text-primary"
-            aria-label="GitHub"
+            className="transition hover:text-foreground"
           >
-            <Github className="h-4 w-4" />
+            GitHub
           </a>
           <a
-            href={profile.linkedin}
+            href={profile.links.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:border-primary/40 hover:text-primary"
-            aria-label="LinkedIn"
+            className="transition hover:text-foreground"
           >
-            <Linkedin className="h-4 w-4" />
+            LinkedIn
           </a>
           <a
             href={`mailto:${profile.email}`}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:border-primary/40 hover:text-primary"
-            aria-label="Email"
+            className="transition hover:text-foreground"
           >
-            <Mail className="h-4 w-4" />
+            Email
           </a>
-        </div>
-        <p className="text-xs text-subtle">
-          <Link to="/" className="text-muted no-underline hover:text-primary">
+          <Link to="/" className="transition hover:text-foreground">
             Home
           </Link>
-          {" · "}
-          <Link to="/projects" className="text-muted no-underline hover:text-primary">
-            Projects
-          </Link>
-        </p>
+        </div>
+      </div>
+      <div className="border-t border-border/60 py-4 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} {profile.name}. Crafted with care.
       </div>
     </footer>
-  );
+  )
 }
