@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d111a"/>
+      <stop offset="100%" stop-color="#121826"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#1e293b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect width="960" height="540" fill="url(#grid)" opacity="0.55"/>
+  <circle cx="820" cy="80" r="120" fill="#22d3ee" opacity="0.08"/>
+  <circle cx="100" cy="480" r="140" fill="#22d3ee" opacity="0.06"/>
+  <rect x="80" y="200" width="120" height="48" rx="10" fill="#121826" stroke="#22d3ee" stroke-opacity="0.45"/>
+  <rect x="260" y="200" width="120" height="48" rx="10" fill="#121826" stroke="#22d3ee" stroke-opacity="0.45"/>
+  <rect x="440" y="200" width="120" height="48" rx="10" fill="#121826" stroke="#22d3ee" stroke-opacity="0.45"/>
+  <rect x="620" y="200" width="120" height="48" rx="10" fill="#121826" stroke="#22d3ee" stroke-opacity="0.45"/>
+  <path d="M200 224H260M380 224H440M560 224H620" stroke="#22d3ee" stroke-width="2" stroke-opacity="0.55"/>
+  <circle cx="230" cy="224" r="3" fill="#22d3ee"/><circle cx="410" cy="224" r="3" fill="#22d3ee"/><circle cx="590" cy="224" r="3" fill="#22d3ee"/>
+  <text x="80" y="360" fill="#22d3ee" font-family="ui-sans-serif,system-ui" font-size="14" font-weight="600" letter-spacing="2">PROJECT</text>
+  <text x="80" y="400" fill="#e8edf7" font-family="ui-sans-serif,system-ui" font-size="28" font-weight="700">D365 BYOD Recovery</text>
+  <text x="80" y="480" fill="#8b95a8" font-family="ui-sans-serif,system-ui" font-size="16">Retain | Recover | Delta</text>
+</svg>
