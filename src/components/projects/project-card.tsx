@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Activity, GraduationCap } from "lucide-react";
 import type { Project } from "@/data/projects";
+import { coverUri } from "@/data/cover-uris";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export function ProjectCard({ project, className }: { project: Project; className?: string }) {
   const Icon = project.category === "academic" ? GraduationCap : Activity;
+  const cover = coverUri(project.coverImage);
   return (
     <Link
       to="/projects/$id"
@@ -16,10 +18,10 @@ export function ProjectCard({ project, className }: { project: Project; classNam
         className,
       )}
     >
-      {project.coverImage ? (
+      {cover ? (
         <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-bg">
           <img
-            src={project.coverImage}
+            src={cover}
             alt=""
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             loading="lazy"

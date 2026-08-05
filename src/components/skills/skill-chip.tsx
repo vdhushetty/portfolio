@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Skill } from "@/data/skills";
+import { skillIconUri } from "@/data/skill-icon-uris";
 
 export function SkillChip({
   skill,
@@ -13,6 +14,7 @@ export function SkillChip({
   const iconBox = size === "sm" ? "h-6 w-6" : "h-7 w-7";
   const img = size === "sm" ? "h-4 w-4" : "h-[18px] w-[18px]";
   const pad = size === "sm" ? "px-2 py-1 text-xs gap-1.5" : "px-2.5 py-1.5 text-sm gap-2";
+  const iconSrc = skillIconUri(skill.icon);
 
   return (
     <span
@@ -29,14 +31,16 @@ export function SkillChip({
           iconBox,
         )}
       >
-        <img
-          src={skill.icon}
-          alt=""
-          className={cn("object-contain", img)}
-          loading="lazy"
-          width={18}
-          height={18}
-        />
+        {iconSrc ? (
+          <img
+            src={iconSrc}
+            alt=""
+            className={cn("object-contain", img)}
+            loading="lazy"
+            width={18}
+            height={18}
+          />
+        ) : null}
       </span>
       <span className="font-medium leading-none">{skill.name}</span>
     </span>
