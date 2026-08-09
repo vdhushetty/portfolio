@@ -1,280 +1,401 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from "react-icons/fa";
-import { projectsData } from "./projectsData";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FiArrowLeft, FiArrowRight, FiAlertTriangle, FiCheckCircle, FiGrid } from "react-icons/fi";
+import { projects, domains, getProjectById } from "./projectsCatalog";
+import RefArch, { DataflowList } from "../components/RefArch";
+import { Metric } from "../components/ui";
+import TrustBadge from "../components/TrustBadge";
+
+const hexFor = (key) => domains.find((d) => d.key === key)?.hex || "#3fe0ff";
+const accentClass = { de: "accent-de", da: "accent-da", ai: "accent-ai" };
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
-  
-  const project = projectsData.find((p) => p.id === id);
 
-  if (!project) {
+  const project = getProjectById(id);
+
+  if (!project || project.placeholder) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-white">
+      <div className="min-h-screen grid place-items-center px-4 pt-16">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-4">Project Not Found</h1>
-          <p className="text-gray-600 mb-8">The project you're looking for doesn't exist.</p>
+          <h1 className="font-display text-4xl font-semibold mb-3">Case study not found</h1>
+          <p className="text-dim mb-8">This project doesn't have a published write-up yet.</p>
           <button
-            onClick={() => navigate("/#projects")}
-            className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all duration-200"
+            onClick={() => navigate("/projects")}
+            className="rounded-lg bg-signal px-6 py-3 font-mono text-sm text-canvas hover:bg-white transition-colors"
           >
-            Back to Projects
+            Back to projects
           </button>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-white text-black pt-20">
-      {/* Hero Section with Back Button */}
-      <div className="bg-gradient-to-br from-blue-50 to-white py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <button
-            onClick={() => navigate("/#projects")}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition bg-blue-100 hover:bg-blue-200 px-4 py-2 rounded-lg mb-8"
-          >
-            <FaArrowLeft className="text-lg" /> Back to Projects
-          </button>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">{project.title}</h1>
-          <p className="text-xl text-gray-600 mb-8">{project.description}</p>
-          
-          {/* Tech Stack */}
-          <div className="flex flex-wrap gap-2 mb-12">
-            {project.tech.map((tech, i) => (
-              <span
-                key={i}
-                className="px-4 py-2 text-sm font-semibold bg-blue-100 text-blue-700 rounded-full"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+  const hex = hexFor(project.domain);
+  const idx = projects.findIndex((p) => p.id === project.id);
+  const prevProject = projects[(idx - 1 + projects.length) % projects.length];
+  const nextProject = projects[(idx + 1) % projects.length];
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                <FaExternalLinkAlt /> Live Demo
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 bg-gray-200 text-black font-semibold rounded-lg hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                <FaGithub /> View Code
-              </a>
-            )}
+  return (
+    <div className={`min-h-screen pt-16 ${accentClass[project.domain]}`}>
+      {/* Header */}
+      <div className="relative border-b border-line overflow-hidden">
+        <div className="absolute inset-0 -z-10 grid-bg" />
+        <div className="absolute inset-0 -z-10 signal-wash" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <button
+            onClick={() => navigate("/projects")}
+            className="inline-flex items-center gap-2 font-mono text-sm text-dim hover:text-signal transition-colors mb-8"
+          >
+            <FiArrowLeft /> Back to projects
+          </button>
+
+          <div>
+            <div className="max-w-3xl">
+              <span className="eyebrow mb-4 block" style={{ color: "var(--accent)" }}>
+                {domains.find((d) => d.key === project.domain)?.label}
+              </span>
+              <TrustBadge evidence={project.evidence} />
+              <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight">
+                {project.title}
+              </h1>
+              <p className="mt-5 text-lg text-dim leading-relaxed">{project.description}</p>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {project.tech.map((t) => (
+                  <span key={t} className="chip text-xs">{t}</span>
+                ))}
+              </div>
+              {(project.liveUrl || project.githubUrl) && (
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {project.liveUrl && (
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-signal px-5 py-2.5 font-mono text-sm text-canvas hover:bg-white transition-colors">
+                      <FaExternalLinkAlt /> Live
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-line-2 px-5 py-2.5 font-mono text-sm text-ink hover:border-signal hover:text-signal transition-colors">
+                      <FaGithub /> Code
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-20">
-        {/* Overview Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Overview</h2>
-          <p className="text-lg text-gray-700 leading-relaxed">{project.fullDescription}</p>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+        {/* Reference architecture + numbered dataflow */}
+        {project.refarch && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-6">Architecture</h2>
+            <div className="panel hud overflow-hidden">
+              <div className="viz-surface overflow-x-auto p-4 sm:p-6">
+                <RefArch spec={project.refarch} accent={hex} />
+              </div>
+            </div>
+            {project.refarch.dataflow && (
+              <>
+                <h3 className="font-display text-lg font-semibold mt-8 mb-1">Data flow</h3>
+                <DataflowList steps={project.refarch.dataflow} accent={hex} />
+              </>
+            )}
+          </section>
+        )}
+
+        {/* Overview */}
+        <section>
+          <h2 className="font-display text-2xl font-semibold mb-4">Overview</h2>
+          <p className="text-lg text-dim leading-relaxed max-w-4xl">{project.fullDescription}</p>
+        </section>
+
+        {project.evidence && (
+          <section className="rounded-xl border border-line bg-white/[0.02] p-5">
+            <p className="eyebrow text-signal">Evidence disclosure</p>
+            <p className="mt-2 text-sm text-dim">
+              <span className="font-medium text-ink">{project.evidence.source}.</span>{" "}
+              {project.evidence.detail}
+            </p>
+          </section>
+        )}
+
+        {/* Metrics */}
+        {project.metrics?.length > 0 && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-8">Key outcomes</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line panel overflow-hidden">
+              {project.metrics.map((m) => (
+                <div key={m.label} className="bg-surface p-6">
+                  <Metric value={m.value} label={m.label} description={m.description} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Problem / Solution */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {project.problem && (
+            <section className="panel p-7 border-l-2" style={{ borderLeftColor: "var(--color-amber)" }}>
+              <h2 className="flex items-center gap-2 font-display text-xl font-semibold mb-4 text-amber-400">
+                <FiAlertTriangle /> The challenge
+              </h2>
+              <p className="text-dim leading-relaxed">{project.problem}</p>
+            </section>
+          )}
+          {project.solution && (
+            <section className="panel p-7 border-l-2" style={{ borderLeftColor: "var(--color-mint)" }}>
+              <h2 className="flex items-center gap-2 font-display text-xl font-semibold mb-4 text-mint">
+                <FiCheckCircle /> The solution
+              </h2>
+              <p className="text-dim leading-relaxed">{project.solution}</p>
+            </section>
+          )}
         </div>
 
-        {/* Key Metrics/Outcomes Section */}
-        {project.metrics && project.metrics.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8">Key Outcomes</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {project.metrics.map((metric, i) => (
-                <div key={i} className="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-6 shadow-lg">
-                  <p className="text-sm font-semibold text-blue-100 mb-2">{metric.label}</p>
-                  <p className="text-3xl font-bold mb-1">{metric.value}</p>
-                  {metric.description && <p className="text-sm text-blue-50">{metric.description}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Problem Section */}
-        {project.problem && (
-          <div className="mb-16 bg-red-50 border-l-4 border-red-600 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4 text-red-900">The Challenge</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">{project.problem}</p>
-          </div>
-        )}
-
-        {/* Solution Section */}
-        {project.solution && (
-          <div className="mb-16 bg-green-50 border-l-4 border-green-600 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4 text-green-900">The Solution</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">{project.solution}</p>
-          </div>
-        )}
-
-        {/* Architecture Section */}
-        {project.architecture && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8">Architecture</h2>
-            <div className="rounded-lg overflow-hidden shadow-lg">
-              <img
-                src={project.architecture}
-                alt="Project Architecture"
-                className="w-full h-auto object-contain bg-gray-50 p-4"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Key Features Section */}
-        {project.features && project.features.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8">Key Features</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {project.features.map((feature, i) => (
-                <div key={i} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                  <span className="w-3 h-3 bg-blue-600 rounded-full mt-2 flex-shrink-0"></span>
-                  <span className="text-gray-700">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Challenges Section */}
-        {project.challenges && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">Challenges & Solutions</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">{project.challenges}</p>
-          </div>
-        )}
-
-        {/* Project Details Sidebar */}
-        <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-200 mb-16">
-          <h2 className="text-2xl font-bold mb-8">Project Details</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {project.duration && (
-              <div>
-                <p className="text-sm text-gray-600 font-semibold uppercase tracking-wide">Duration</p>
-                <p className="text-lg text-gray-800 mt-1">{project.duration}</p>
-              </div>
-            )}
-
-            {project.role && (
-              <div>
-                <p className="text-sm text-gray-600 font-semibold uppercase tracking-wide">My Role</p>
-                <p className="text-lg text-gray-800 mt-1">{project.role}</p>
-              </div>
-            )}
-
-            {project.team && (
-              <div>
-                <p className="text-sm text-gray-600 font-semibold uppercase tracking-wide">Team Size</p>
-                <p className="text-lg text-gray-800 mt-1">{project.team}</p>
-              </div>
-            )}
-
-            {project.status && (
-              <div>
-                <p className="text-sm text-gray-600 font-semibold uppercase tracking-wide">Status</p>
-                <p className="text-lg text-gray-800 mt-1">{project.status}</p>
-              </div>
-            )}
-          </div>
-
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <p className="text-sm text-gray-600 font-semibold uppercase tracking-wide mb-4">Technologies</p>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded-full font-medium"
-                  >
-                    {tech}
+        {/* Optimizations — numbered, engineering-log style */}
+        {project.optimizations?.length > 0 && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-6">Optimizations</h2>
+            <div className="panel divide-y divide-line overflow-hidden">
+              {project.optimizations.map((o, i) => (
+                <div key={i} className="flex items-start gap-4 px-6 py-4">
+                  <span className="font-mono text-sm shrink-0 pt-0.5" style={{ color: "var(--accent)" }}>
+                    {String(i + 1).padStart(2, "0")}
                   </span>
+                  <p className="text-dim text-sm leading-relaxed">{o}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Project-specific sections */}
+        {project.sections?.map((sec) => (
+          <section key={sec.title}>
+            <h2 className="font-display text-2xl font-semibold mb-6">{sec.title}</h2>
+            {sec.body && <p className="text-dim leading-relaxed max-w-4xl mb-5">{sec.body}</p>}
+            {sec.items?.length > 0 && (
+              <div className="grid sm:grid-cols-2 gap-3">
+                {sec.items.map((it, i) => (
+                  <div key={i} className="flex items-start gap-3 panel p-4">
+                    <span className="mt-1.5 h-2 w-2 rounded-full shrink-0" style={{ background: "var(--accent)" }} />
+                    <span className="text-dim text-sm leading-relaxed">{it}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        ))}
+
+        {/* Original design artifact */}
+        {project.architecture && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-6">Detailed design (Lucidchart)</h2>
+            <div className="panel p-4 overflow-hidden">
+              <img src={project.architecture} alt="Architecture diagram" className="w-full h-auto rounded-lg" />
+            </div>
+          </section>
+        )}
+
+        {/* Features */}
+        {project.features?.length > 0 && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-6">
+              {project.featuresTitle || "Key features"}
+            </h2>
+            <div className="grid md:grid-cols-2 gap-3">
+              {project.features.map((f, i) => (
+                <div key={i} className="flex items-start gap-3 panel p-4">
+                  <span className="mt-1.5 h-2 w-2 rounded-full shrink-0" style={{ background: "var(--accent)" }} />
+                  <span className="text-dim text-sm leading-relaxed">{f}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Challenges */}
+        {project.challenges && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-4">Challenges &amp; solutions</h2>
+            <p className="text-dim leading-relaxed max-w-4xl">{project.challenges}</p>
+          </section>
+        )}
+
+        {/* Details */}
+        <section className="panel p-8">
+          <h2 className="font-display text-xl font-semibold mb-6">Project details</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              ["Duration", project.duration],
+              ["Role", project.role],
+              ["Team", project.team],
+              ["Status", project.status],
+            ]
+              .filter(([, v]) => v)
+              .map(([k, v]) => (
+                <div key={k}>
+                  <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-faint">{k}</p>
+                  <p className="text-ink mt-1">{v}</p>
+                </div>
+              ))}
+          </div>
+          {project.technologies?.length > 0 && (
+            <div className="mt-8 pt-6 border-t border-line">
+              <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-faint mb-4">Full stack</p>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((t) => (
+                  <span key={t} className="chip text-xs">{t}</span>
                 ))}
               </div>
             </div>
           )}
-        </div>
+        </section>
 
-        {project.steps && project.steps.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-3xl font-bold mb-12">Project Phases</h2>
-            <div className="space-y-12">
-              {project.steps.map((step, stepIndex) => (
-                <div key={stepIndex} className="bg-gradient-to-br from-blue-50 to-gray-50 rounded-2xl p-8 border border-blue-200">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-blue-600 mb-2">{step.title}</h3>
-                    <p className="text-lg text-gray-700">{step.description}</p>
+        {/* Phases */}
+        {project.steps?.length > 0 && (
+          <section>
+            <h2 className="font-display text-2xl font-semibold mb-10">How it works</h2>
+            <div className="space-y-6">
+              {project.steps.map((step, i) => (
+                <div key={i} className="panel p-8">
+                  <div className="flex items-baseline gap-4 mb-5">
+                    <span className="font-mono text-sm" style={{ color: "var(--accent)" }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-ink">{step.title}</h3>
+                      <p className="mt-2 text-dim">{step.description}</p>
+                    </div>
                   </div>
-
-                  {step.details && step.details.length > 0 && (
-                    <div className="mb-6">
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4">Process Overview:</h4>
-                      <ul className="space-y-3">
-                        {step.details.map((detail, detailIndex) => (
-                          <li key={detailIndex} className="flex items-start gap-3">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></span>
-                            <span className="text-gray-700">{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  {step.details?.length > 0 && (
+                    <ul className="space-y-2.5 mb-6 sm:pl-10">
+                      {step.details.map((d, j) => (
+                        <li key={j} className="flex items-start gap-3 text-sm text-dim">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "var(--accent)" }} />
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {step.keyPoints?.length > 0 && (
+                    <div className="grid gap-2.5 mb-6 sm:pl-10">
+                      {step.keyPoints.map((p, j) => (
+                        <div key={j} className="rounded-lg border-l-2 bg-white/[0.02] px-4 py-2.5 text-sm text-dim" style={{ borderLeftColor: "var(--accent)" }}>
+                          {p}
+                        </div>
+                      ))}
                     </div>
                   )}
-
-                  {step.keyPoints && step.keyPoints.length > 0 && (
-                    <div className="mb-8">
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4">Key Points:</h4>
-                      <div className="grid md:grid-cols-1 gap-3">
-                        {step.keyPoints.map((point, pointIndex) => (
-                          <div key={pointIndex} className="bg-white p-4 rounded-lg border-l-4 border-blue-600">
-                            <p className="text-gray-700">{point}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {step.image && (
-                    <div className="mt-8">
-                      <img
-                        src={step.image}
-                        alt={step.title}
-                        className="w-full rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
-                      />
-                    </div>
+                    <img src={step.image} alt={step.title} className="mt-4 w-full rounded-lg border border-line" />
                   )}
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl p-12 text-center mt-20">
-          <h2 className="text-3xl font-bold mb-4">Interested in My Work?</h2>
-          <p className="text-2xl font-semibold mb-8 text-white">Let's discuss how I can help your project</p>
-          <a
-            href="/#contact"
-            className="inline-block px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-200"
+        {/* CTA */}
+        <section className="panel hud text-center py-14 px-6 signal-wash">
+          <h2 className="font-display text-3xl font-semibold mb-3">Interested in work like this?</h2>
+          <p className="text-dim mb-8">Let's talk about the data problem you're trying to solve.</p>
+          <button
+            onClick={() => navigate("/#contact")}
+            className="inline-flex rounded-lg bg-signal px-7 py-3 font-mono text-sm text-canvas hover:bg-white transition-colors"
           >
-            Get In Touch
-          </a>
-        </div>
+            Get in touch
+          </button>
+        </section>
+
+        {/* Prev / index / next pager */}
+        <nav aria-label="Project navigation" className="grid sm:grid-cols-[1fr_auto_1fr] gap-3 items-stretch">
+          <button
+            onClick={() => navigate(`/project/${prevProject.id}`)}
+            className="panel panel-hover group p-5 text-left"
+          >
+            <span className="flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] uppercase text-faint mb-2">
+              <FiArrowLeft /> Previous
+            </span>
+            <span className="font-display font-semibold text-ink group-hover:text-signal transition-colors">
+              {prevProject.short || prevProject.title}
+            </span>
+            <span className="mt-1.5 flex items-center gap-2 font-mono text-[10px] text-faint">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: hexFor(prevProject.domain) }} />
+              {domains.find((d) => d.key === prevProject.domain)?.label}
+            </span>
+          </button>
+
+          <button
+            onClick={() => navigate("/projects")}
+            aria-label="All projects"
+            title="All projects"
+            className="panel panel-hover grid place-items-center px-5 py-4 text-dim hover:text-signal"
+          >
+            <FiGrid className="text-xl" />
+            <span className="font-mono text-[9px] tracking-[0.14em] uppercase mt-1.5">All</span>
+          </button>
+
+          <button
+            onClick={() => navigate(`/project/${nextProject.id}`)}
+            className="panel panel-hover group p-5 text-right"
+          >
+            <span className="flex items-center justify-end gap-2 font-mono text-[11px] tracking-[0.18em] uppercase text-faint mb-2">
+              Next <FiArrowRight />
+            </span>
+            <span className="font-display font-semibold text-ink group-hover:text-signal transition-colors">
+              {nextProject.short || nextProject.title}
+            </span>
+            <span className="mt-1.5 flex items-center justify-end gap-2 font-mono text-[10px] text-faint">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: hexFor(nextProject.domain) }} />
+              {domains.find((d) => d.key === nextProject.domain)?.label}
+            </span>
+          </button>
+        </nav>
       </div>
+
+      {/* Project switcher rail — ultra-wide screens only */}
+      <aside className="hidden 2xl:block fixed right-7 top-32 w-52 z-30" aria-label="Project switcher">
+        <div className="panel p-4 max-h-[70vh] overflow-y-auto">
+          <div className="eyebrow mb-3">Projects</div>
+          {domains.map((d) => (
+            <div key={d.key} className="mb-3.5 last:mb-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: d.hex }} />
+                <span className="font-mono text-[9.5px] tracking-[0.14em] uppercase text-faint">
+                  {d.label}
+                </span>
+              </div>
+              <ul>
+                {projects
+                  .filter((p) => p.domain === d.key)
+                  .map((p) => (
+                    <li key={p.id}>
+                      <button
+                        onClick={() => navigate(`/project/${p.id}`)}
+                        className={`w-full text-left font-mono text-[11.5px] py-[3px] pl-3.5 border-l transition-colors ${
+                          p.id === id
+                            ? "text-signal border-signal"
+                            : "text-faint border-line hover:text-ink hover:border-line-2"
+                        }`}
+                      >
+                        {p.short || p.title}
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </aside>
     </div>
   );
 }

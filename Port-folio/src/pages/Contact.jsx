@@ -1,180 +1,99 @@
-// src/pages/Contact.jsx
-import React, { useState } from "react";
-import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FiClock, FiMail, FiMessageCircle, FiShield } from "react-icons/fi";
+import { Reveal, SectionHeader } from "../components/ui";
+
+const EMAIL = "venkatsaidhushetty@gmail.com";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("idle");
-
-  const submit = async (e) => {
-    e.preventDefault();
-    setStatus("sending");
-    
-    try {
-      const webhookUrl = "https://discord.com/api/webhooks/1462281263682687018/CjwSrLr1i7bV0AuFsaKut8TXf1Z0tmU5Jl8A7DpJUK8Mi2ECXshSk9vOEieHQj3mfVqs";
-      
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: `**New Contact Form Submission**`,
-          embeds: [
-            {
-              title: "Contact Form Message",
-              color: 4169E1,
-              fields: [
-                {
-                  name: "Name",
-                  value: form.name,
-                  inline: true,
-                },
-                {
-                  name: "Email",
-                  value: form.email,
-                  inline: true,
-                },
-                {
-                  name: "Message",
-                  value: form.message,
-                  inline: false,
-                },
-              ],
-              timestamp: new Date(),
-            },
-          ],
-        }),
-      });
-      
-      if (response.ok) {
-        setStatus("success");
-        setForm({ name: "", email: "", message: "" });
-        setTimeout(() => setStatus("idle"), 3000);
-      } else {
-        setStatus("error");
-        setTimeout(() => setStatus("idle"), 3000);
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      setStatus("error");
-      setTimeout(() => setStatus("idle"), 3000);
-    }
-  };
-
+  const openChat = () =>
+    window.dispatchEvent(
+      new CustomEvent("open-portfolio-chat", { detail: { mode: "human" } })
+    );
 
   return (
-    <section id="contact" className="w-full">
-      <div className="mb-12">
-        <h2 className="text-5xl font-bold mb-4 text-black">Get In Touch</h2>
-        <div className="h-1 w-20 bg-blue-600 rounded-full"></div>
-      </div>
+    <div>
+      <SectionHeader
+        index="// 10"
+        kicker="Contact"
+        title="Let's build something reliable."
+        sub="Message me here for a private, resumable conversation—or use email and LinkedIn."
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Contact Information */}
-        <div>
-          <p className="text-lg text-gray-700 mb-8">
-            I'd love to hear from you! Whether you have a question or want to collaborate, feel free to reach out.
-          </p>
-
-          <div className="space-y-6">
-            <div className="glossy-button p-6 rounded-xl hover:shadow-lg transition-all">
-              <div className="flex items-start">
-                <FaEnvelope className="text-3xl text-blue-600 mr-4 mt-1" />
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <Reveal>
+          <div className="panel h-full p-7">
+            <span className="eyebrow text-signal">Direct conversation</span>
+            <h3 className="mt-3 font-display text-2xl font-semibold">
+              Chat with me from this portfolio.
+            </h3>
+            <p className="mt-3 leading-relaxed text-dim">
+              Your message is saved privately and delivered to my Discord inbox. I
+              reply personally, and the response appears in the same browser conversation.
+            </p>
+            <button
+              onClick={openChat}
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-signal px-5 py-3 font-mono text-sm font-medium text-canvas hover:bg-ink"
+            >
+              <FiMessageCircle /> Message Venkat
+            </button>
+            <div className="mt-7 grid gap-3 border-t border-line pt-5 sm:grid-cols-2">
+              <div className="flex items-start gap-3">
+                <FiClock className="mt-1 text-mint" />
                 <div>
-                  <h4 className="font-semibold text-black mb-1">Email</h4>
-                  <a
-                    href="mailto:venkatsaidhushetty@gmail.com"
-                    className="text-gray-700 hover:text-blue-600 transition"
-                  >
-                    venkatsaidhushetty@gmail.com
-                  </a>
+                  <p className="text-sm text-ink">Usually within 24 hours</p>
+                  <p className="text-xs text-faint">Pacific Time · Bellevue, WA</p>
                 </div>
               </div>
-            </div>
-
-            <div className="glossy-button p-6 rounded-xl hover:shadow-lg transition-all">
-              <div>
-                <h4 className="font-semibold text-black mb-4">Connect With Me</h4>
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.linkedin.com/in/vdhushetty/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-110 duration-200"
-                  >
-                    <FaLinkedin className="text-xl" />
-                  </a>
-                  <a
-                    href="https://github.com/vdhushetty"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition transform hover:scale-110 duration-200"
-                  >
-                    <FaGithub className="text-xl" />
-                  </a>
+              <div className="flex items-start gap-3">
+                <FiShield className="mt-1 text-mint" />
+                <div>
+                  <p className="text-sm text-ink">Private by default</p>
+                  <p className="text-xs text-faint">Not published or used for marketing</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Contact Form */}
-        <div>
-          <form onSubmit={submit} className="space-y-5">
-            <div>
-              <input
-                className="w-full rounded-xl border border-gray-300 px-5 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
-                placeholder="Your Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                className="w-full rounded-xl border border-gray-300 px-5 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
-                placeholder="Your Email"
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <textarea
-                className="w-full rounded-xl border border-gray-300 px-5 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition resize-none"
-                rows={6}
-                placeholder="Your Message"
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="w-full px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 active:scale-95 disabled:opacity-60 transition-all duration-200"
+        <Reveal delay={80}>
+          <div className="panel h-full divide-y divide-line">
+            <a
+              href={"mailto:" + EMAIL}
+              className="flex items-center gap-4 p-5 hover:bg-white/[0.02]"
             >
-              {status === "sending" ? "Sending…" : "Send Message"}
-            </button>
-
-            {status === "success" && (
-              <div className="p-4 bg-green-100 border border-green-400 text-green-800 rounded-xl text-center font-semibold">
-                ✓ Message sent successfully!
+              <FiMail className="text-xl text-signal" />
+              <div>
+                <span className="eyebrow">Email</span>
+                <p className="mt-1 break-all text-sm text-ink">{EMAIL}</p>
               </div>
-            )}
-            {status === "error" && (
-              <div className="p-4 bg-red-100 border border-red-400 text-red-800 rounded-xl text-center font-semibold">
-                ✗ Failed to send message. Please try again.
+            </a>
+            <a
+              href="https://www.linkedin.com/in/vdhushetty/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-5 hover:bg-white/[0.02]"
+            >
+              <FaLinkedin className="text-xl text-signal" />
+              <div>
+                <span className="eyebrow">LinkedIn</span>
+                <p className="mt-1 text-sm text-ink">Professional profile and recommendations</p>
               </div>
-            )}
-          </form>
-        </div>
+            </a>
+            <a
+              href="https://github.com/vdhushetty"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-5 hover:bg-white/[0.02]"
+            >
+              <FaGithub className="text-xl text-signal" />
+              <div>
+                <span className="eyebrow">GitHub</span>
+                <p className="mt-1 text-sm text-ink">Code and public project activity</p>
+              </div>
+            </a>
+          </div>
+        </Reveal>
       </div>
-    </section>
+    </div>
   );
 }

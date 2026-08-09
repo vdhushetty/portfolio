@@ -1,13 +1,22 @@
-node_modules
-.DS_Store
-.vercel
-.output
-dist
+# Dependencies and build output
+node_modules/
+Port-folio/node_modules/
+Port-folio/dist/
+.output/
+dist/
+
+# Local runtime data and secrets
+.data/
+.vercel/
 .env
 .env.*
+Port-folio/.env
+Port-folio/.env.*
+
+# Generated and local-only files
 *.log
-/tmp
-screenshots
-artifacts
-.pglite
-Port-folio
+.DS_Store
+/tmp/
+screenshots/
+artifacts/
+.pglite/

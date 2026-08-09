@@ -1,82 +1,128 @@
-// src/pages/Work.jsx
-import { FaBriefcase } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
+import { Reveal, SectionHeader } from "../components/ui";
 
 const workExperience = [
   {
-    title: "Data Engineer / Data Analyst",
+    title: "Sr. Databricks Data Engineer",
+    company: "Lindsay Corporation",
+    type: "Contract",
+    period: "March 2026 – Present",
+    current: true,
+    achievements: [
+      "Designed and implemented a Medallion architecture to process and refine sales data from Bronze to Gold layers.",
+      "Developed SQL queries to transform, cleanse, and prepare data for downstream consumption.",
+      "Built interactive Databricks AI/BI dashboards for data visualization and insights.",
+      "Conducted data validation to ensure accuracy and reliability of datasets.",
+    ],
+  },
+  {
+    title: "Sr. Data Engineer",
     company: "Taylor Farms",
     type: "Contract",
-    period: "May 2022 – Present",
+    period: "May 2022 – March 2026",
     achievements: [
-      "Developed and optimized ETL pipelines using Pyspark in Azure Synapse Analytics, handling large structured and semi-structured datasets, increasing data processing efficiency by 35%.",
-      "Wrote efficient SQL and T-SQL queries to support real-time reporting, reducing report generation time by 25%.",
-      "Collaborated with data engineers, data scientists, and business teams on predictive modeling to forecast upcoming sales orders, contributing to a 15% improvement in forecast accuracy.",
-      "Designed data ingestion and transformation workflows using Azure Event Hub, Azure Data Lake Gen2, and Delta Live Tables, cutting orchestration costs by 30%.",
-      "Engineered a data retention solution for D365 that decreased storage costs by 20%.",
-      "Migrated pipelines from Azure Synapse Analytics to Azure Databricks, optimizing Spark cluster configurations and reducing compute overhead by 28%.",
-      "Built CI/CD pipelines for Azure-based deployments using DevOps best practices.",
+      "Designed pipelines in Azure Synapse Analytics to migrate on-premises databases to Azure SQL, then migrated them onto Azure Databricks.",
+      "Designed scalable architecture on Databricks + Unity Catalog — centralized access control, data lineage, and auditing across the platform.",
+      "Built Databricks workflows with Delta Live Tables to handle streaming inserts, updates, and deletes.",
+      "Developed Python notebooks to capture streaming data from Azure Event Hubs and persist it into Delta tables.",
+      "Improved ingestion speed with a Databricks Auto Loader framework replicating and accelerating Synapse Link's CSV-to-Parquet conversion.",
+      "Architected a Disaster Recovery strategy for Databricks workflows to ensure business continuity.",
+      "Architected an Azure Databricks solution to recover and retain BYOD data deleted from Dynamics 365 (D365).",
+      "Operationalized ML models in batch and real-time pipelines with governance for traceability and auditability.",
     ],
   },
   {
     title: "Data Engineer",
-    company: "ThingBlu",
+    company: "C2S Technologies",
     type: "Contract",
-    period: "January 2017 – July 2021",
+    period: "January 2017 – January 2020",
     achievements: [
-      "Developed a data warehouse for agritech data using dataflows in Synapse Analytics with STAR dimensional modeling.",
-      "Created and optimized data loading processes within Azure Synapse Analytics with efficient, incremental loading.",
-      "Developed interactive Power BI reports and sales dashboards with drill-down capabilities and advanced visualizations.",
-      "Created dynamic calculations using DAX, allowing users to interact with reports and explore data from multiple perspectives.",
-      "Employed Git version control for database artifacts and Azure Synapse workspace for team collaboration.",
-      "Worked on creating complex stored procedures and implemented row-level security using DAX.",
-      "Wrote comprehensive test plans in SQL to ensure data consistency across multiple databases.",
-      "Created documentation on Medallion architecture in Azure DevOps Wiki, adhering to Microsoft Standards.",
+      "Built an agritech data warehouse in Synapse Analytics with STAR dimensional modeling — schema, relationships, and indexes.",
+      "Created incremental, optimized loading processes with appropriate indexing and partitioning to minimize processing time.",
+      "Set up error handling with custom logging, notifications, and corrective actions to uphold data integrity.",
+      "Developed interactive Power BI dashboards with drill-down across time, region, product, customer, and rep.",
+      "Authored dynamic DAX calculations and implemented row-level security to control access to sensitive data.",
+      "Wrote SQL test plans validating data consistency at source and sink across multiple databases.",
+      "Documented Medallion architecture in Azure DevOps Wiki to Microsoft standards.",
     ],
   },
 ];
 
-export default function Work() {
+export default function Work({ mode = "all" }) {
+  const navigate = useNavigate();
+  const featured = mode === "featured";
+  const jobs = featured ? workExperience.slice(0, 2) : workExperience;
+
   return (
-    <section id="work" className="w-full">
-      <div className="mb-12">
-        <h2 className="text-5xl font-bold mb-4 text-black">Work Experience</h2>
-        <div className="h-1 w-20 bg-blue-600 rounded-full"></div>
-      </div>
+    <div>
+      <SectionHeader
+        index="// 03"
+        kicker="Experience"
+        title={featured ? "Recent roles, measurable outcomes." : "Where I've shipped."}
+        sub={featured ? "A concise view of the teams and platforms behind the case studies." : undefined}
+      />
 
-      <div className="space-y-8">
-        {workExperience.map((job, index) => (
-          <div
-            key={index}
-            className="glossy-button rounded-2xl p-8 hover:shadow-xl transition-all duration-300 group border-l-4 border-blue-600"
-          >
-            <div className="flex items-start gap-6">
-              <FaBriefcase className="text-5xl text-blue-600 group-hover:scale-110 transition-transform mt-2" />
-              <div className="flex-1">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-black group-hover:text-blue-600 transition mb-1">
-                      {job.title}
-                    </h3>
-                    <p className="text-lg text-gray-700 font-semibold">
-                      {job.company} <span className="text-gray-600 font-normal">({job.type})</span>
-                    </p>
+      <div className="relative">
+        {/* connecting rail */}
+        <div className="absolute left-[7px] top-2 bottom-2 w-px bg-line hidden sm:block" />
+        <div className="space-y-6">
+          {jobs.map((job, i) => (
+            <Reveal key={job.company} delay={i * 80}>
+              <div className="relative sm:pl-12">
+                <span className="hidden sm:block absolute left-0 top-6 h-4 w-4 rounded-full border-2 border-signal bg-canvas">
+                  <span
+                    className={`absolute inset-1 rounded-full bg-signal ${
+                      job.current ? "node-pulse" : ""
+                    }`}
+                  />
+                </span>
+                <div className="panel panel-hover accent-de p-7">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-5">
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-display text-xl font-semibold text-ink">{job.title}</h3>
+                        {job.current && (
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/40 px-2 py-0.5 font-mono text-[10px] tracking-[0.14em] uppercase text-mint">
+                            <span className="h-1.5 w-1.5 rounded-full bg-mint" /> Current
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-dim mt-0.5">
+                        {job.company}{" "}
+                        <span className="font-mono text-xs text-faint">· {job.type}</span>
+                      </p>
+                    </div>
+                    <span className="font-mono text-xs text-signal whitespace-nowrap">
+                      {job.period}
+                    </span>
                   </div>
-                  <p className="text-gray-600 font-semibold whitespace-nowrap">{job.period}</p>
+                  <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
+                    {(featured ? job.achievements.slice(0, 2) : job.achievements).map((a, j) => (
+                      <li key={j} className="flex gap-3 text-sm text-dim leading-relaxed">
+                        <span className="text-signal mt-1 shrink-0 font-mono text-xs">▹</span>
+                        <span>{a}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-
-                <ul className="space-y-3">
-                  {job.achievements.map((achievement, i) => (
-                    <li key={i} className="flex gap-3 text-gray-700 text-sm leading-relaxed">
-                      <span className="text-blue-600 font-bold mt-1">•</span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
-            </div>
-          </div>
-        ))}
+            </Reveal>
+          ))}
+        </div>
       </div>
-    </section>
+
+      {featured && (
+        <Reveal className="mt-10 flex justify-center">
+          <button
+            onClick={() => navigate("/experience")}
+            className="group inline-flex items-center gap-2 rounded-lg border border-line-2 px-6 py-3 font-mono text-sm text-ink hover:border-signal hover:text-signal transition-colors"
+          >
+            View full experience
+            <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </Reveal>
+      )}
+    </div>
   );
 }

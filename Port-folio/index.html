@@ -2,11 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#080C15" />
+    <meta
+      name="description"
+      content="Venkat Sai Dhushetty — Data Engineer building real-time pipelines, analytics platforms, and AI/ML systems on Azure, Databricks and the cloud."
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://portfolio-vdhushettys-projects.vercel.app/" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="Venkat Sai Dhushetty — Data Engineer · Analytics · AI/ML" />
+    <meta property="og:description" content="Production data platforms, analytics, and AI/ML case studies with transparent evidence labels." />
+    <meta property="og:url" content="https://portfolio-vdhushettys-projects.vercel.app/" />
+    <meta property="og:image" content="https://portfolio-vdhushettys-projects.vercel.app/Images/mypic.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Venkat Sai Dhushetty — Data Engineer · Analytics · AI/ML</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Venkat Sai Dhushetty",
+        "jobTitle": "Senior Data Engineer",
+        "url": "https://portfolio-vdhushettys-projects.vercel.app/",
+        "sameAs": [
+          "https://www.linkedin.com/in/vdhushetty/",
+          "https://github.com/vdhushetty"
+        ],
+        "knowsAbout": [
+          "Data engineering",
+          "Databricks",
+          "Azure",
+          "Analytics engineering",
+          "Power BI",
+          "Machine learning",
+          "MLOps"
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <script>
+      // Apply saved theme before first paint to avoid a flash. Default = dark.
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
