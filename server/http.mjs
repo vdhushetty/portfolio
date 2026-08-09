@@ -20,6 +20,17 @@ export function sendJson(res, status, payload, headers = {}) {
 export function sendError(res, error) {
   const status = error instanceof HttpError ? error.status : 500;
   const code = error instanceof HttpError ? error.code : "INTERNAL_ERROR";
+  if (!(error instanceof HttpError)) {
+    console.error(
+      JSON.stringify({
+        level: "error",
+        message: "portfolio_request_failed",
+        errorName: error?.name || "Error",
+        errorCode: error?.code || null,
+        errorMessage: error?.message || "Unknown error",
+      }),
+    );
+  }
   const message =
     error instanceof HttpError
       ? error.message
