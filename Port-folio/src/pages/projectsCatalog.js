@@ -2,6 +2,7 @@ import { projectsData, domains } from "./projectsData.js";
 import { extras } from "./projectsExtras.js";
 import { refArchSpecs } from "./refArchSpecs.js";
 import { mainProjectAliases, mainProjects } from "./mainProjects.js";
+import { projectVideos } from "./projectVideoCatalog.js";
 
 /* Merged catalog: base entries enriched with card arch strips,
    reference-architecture specs, and per-project detail. */
@@ -9,6 +10,7 @@ const localProjects = projectsData.map((p) => ({
   ...p,
   ...extras[p.id],
   refarch: refArchSpecs[p.id],
+  video: p.video || projectVideos[p.id],
   aliases: Object.entries(mainProjectAliases)
     .filter(([, canonicalId]) => canonicalId === p.id)
     .map(([alias]) => alias),
@@ -19,7 +21,12 @@ const localProjects = projectsData.map((p) => ({
   },
 }));
 
-export const projects = [...localProjects, ...mainProjects];
+const enrichedMainProjects = mainProjects.map((project) => ({
+  ...project,
+  video: project.video || projectVideos[project.id],
+}));
+
+export const projects = [...localProjects, ...enrichedMainProjects];
 
 export const getProjectById = (id) => {
   const canonicalId = mainProjectAliases[id] || id;

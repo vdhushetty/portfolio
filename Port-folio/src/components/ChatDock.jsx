@@ -9,9 +9,36 @@ import {
   FiX,
 } from "react-icons/fi";
 import { apiRequest } from "../lib/api";
+import { codeLanguageLabel, parseMessageParts } from "../lib/chatFormat";
 
 const humanConversationKey = "portfolio_human_conversation";
 const aiConversationKey = "portfolio_ai_conversation";
+
+function MessageContent({ content }) {
+  return (
+    <div className="min-w-0 space-y-2">
+      {parseMessageParts(content).map((part, index) =>
+        part.type === "code" ? (
+          <div
+            key={`${part.type}-${index}`}
+            className="overflow-hidden rounded-lg border border-[#2a3d5e] bg-[#08111f]"
+          >
+            <div className="border-b border-[#2a3d5e] px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[#94a6c4]">
+              {codeLanguageLabel(part.language)}
+            </div>
+            <pre className="max-w-full overflow-x-auto px-3 py-3 font-mono text-xs leading-5 text-[#e8eefb]">
+              <code>{part.content}</code>
+            </pre>
+          </div>
+        ) : (
+          <div key={`${part.type}-${index}`} className="whitespace-pre-wrap break-words">
+            {part.content}
+          </div>
+        )
+      )}
+    </div>
+  );
+}
 
 function Message({ message }) {
   const mine = message.author === "visitor" || message.role === "user";
@@ -25,7 +52,7 @@ function Message({ message }) {
             : "border border-line bg-surface text-ink")
         }
       >
-        {message.body || message.text}
+        <MessageContent content={message.body || message.text} />
       </div>
     </div>
   );
@@ -270,7 +297,7 @@ export default function ChatDock() {
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     maxLength={600}
-                    placeholder="What can Venkat do with Databricks?"
+                    placeholder="Ask about Venkat's projects or experience..."
                     className="min-w-0 flex-1 rounded-lg border border-line bg-canvas px-3 py-2.5 text-sm text-ink placeholder:text-faint focus:border-signal focus:outline-none"
                   />
                   <button
@@ -282,7 +309,7 @@ export default function ChatDock() {
                   </button>
                 </div>
                 <p className="mt-2 font-mono text-[10px] text-faint">
-                  6 questions / 10 min · 20 / day · 600 characters
+                  Profile questions only · no coding requests · 6 / 10 min · 20 / day
                 </p>
               </form>
             </>

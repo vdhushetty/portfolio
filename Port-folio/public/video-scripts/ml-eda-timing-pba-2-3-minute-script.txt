@@ -1,0 +1,11 @@
+In digital-design timing, deeper analysis can provide better path-level information, but it can also be more computationally expensive during design iteration. This project asked whether machine learning could use graph-based analysis signals to approximate path-based timing behavior and help identify which paths merit deeper analysis.
+
+The two timing views in the project were graph-based analysis, or GBA, and path-based analysis, or PBA. GBA provided the input-side timing information, while PBA supplied the supervised-learning target. The challenge was to represent each timing path with features that a regression model could learn from while preserving a meaningful pairing between the two analyses.
+
+I engineered timing-path features from the GBA results and prepared paired GBA and PBA records for modeling. Python and pandas supported that data work. The resulting pipeline moved from timing analysis, through path-feature preparation, into regression models that attempted to estimate the PBA target.
+
+I used Random Forest and related models for the regression comparison through scikit-learn. Random Forest was useful to the project as a model for learning relationships between path features and the more detailed target. I then performed error analysis to review how the estimates related to the PBA outcomes and to frame where deeper analysis could still be warranted.
+
+The catalog verifies the modeling direction: GBA is the recorded input and PBA is the recorded target. It does not provide the circuit designs, number of paths, feature definitions, model hyperparameters, prediction-error values, runtime comparison, or a measured speedup. Because those results are absent, I do not claim a specific accuracy or computational reduction. The verified outcome is the GBA-to-PBA machine-learning workflow and its use for path prioritization.
+
+This project brought data science into an electronic-design-automation problem. My contribution covered path-feature engineering, supervised regression, model comparison, and error analysis. It demonstrates how I approach an expensive analytical process: identify a lower-cost signal, learn its relationship to the detailed result, and keep the model's limits visible when deciding where full analysis is still needed for targeted engineering review.

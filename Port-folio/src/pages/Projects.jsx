@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FiArrowRight, FiArrowUpRight, FiSearch, FiX } from "react-icons/fi";
 import { projects, domains } from "./projectsCatalog";
-import ArchFlow, { PlatformPipeline } from "../components/ArchFlow";
+import { PlatformPipeline } from "../components/ArchFlow";
+import {
+  ArchitectureEvolutionThumbnail,
+  ProjectArchitectureThumbnail,
+} from "../components/ArchitectureEvolution";
 import { Reveal } from "../components/ui";
 import TrustBadge from "../components/TrustBadge";
 
@@ -13,12 +17,16 @@ const featuredProjectIds = [
   "synapse-databricks-migration",
 ];
 
-function ProjectCard({ project, hex, focused, compact = false }) {
+function ProjectThumbnail({ project, hex }) {
+  if (project.architectureEvolution) {
+    return <ArchitectureEvolutionThumbnail story={project.architectureEvolution} accent={hex} />;
+  }
+  return <ProjectArchitectureThumbnail project={project} accent={hex} />;
+}
+
+function ProjectCard({ project, hex, focused }) {
   const navigate = useNavigate();
   const metrics = (project.metrics || []).slice(0, 2);
-  const cardArch = compact
-    ? (project.arch || []).filter((stage) => !stage.detailOnly).slice(0, 3)
-    : project.arch;
 
   return (
     <Reveal>
@@ -31,9 +39,9 @@ function ProjectCard({ project, hex, focused, compact = false }) {
       >
         <div className="sheen" />
 
-        {/* Architecture diagram */}
+        {/* Project-specific architecture thumbnail */}
         <div className="relative viz-surface border-b border-line min-h-[196px] grid place-items-center">
-          <ArchFlow arch={cardArch} accent={hex} size={compact ? "xs" : "sm"} />
+          <ProjectThumbnail project={project} hex={hex} />
         </div>
 
         {/* Content */}
@@ -166,7 +174,6 @@ export default function Projects({ mode = "all" }) {
               key={project.id}
               project={project}
               hex={domains.find((d) => d.key === project.domain)?.hex}
-              compact
             />
           ))}
         </div>

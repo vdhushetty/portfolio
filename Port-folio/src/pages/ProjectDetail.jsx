@@ -4,6 +4,8 @@ import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { FiArrowLeft, FiArrowRight, FiAlertTriangle, FiCheckCircle, FiGrid } from "react-icons/fi";
 import { projects, domains, getProjectById } from "./projectsCatalog";
 import RefArch, { DataflowList } from "../components/RefArch";
+import ArchitectureEvolution from "../components/ArchitectureEvolution";
+import ProjectVideoStory from "../components/ProjectVideoStory";
 import { Metric } from "../components/ui";
 import TrustBadge from "../components/TrustBadge";
 
@@ -92,8 +94,21 @@ export default function ProjectDetail() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+        {/* Reusable project-video slot: storyboard now, hosted video when src is added. */}
+        {project.video && (
+          <ProjectVideoStory
+            video={project.video}
+            architecture={project.architectureEvolution}
+            accent={hex}
+          />
+        )}
+
+        {project.architectureEvolution && (
+          <ArchitectureEvolution story={project.architectureEvolution} accent={hex} />
+        )}
+
         {/* Reference architecture + numbered dataflow */}
-        {project.refarch && (
+        {project.refarch && !project.architectureEvolution && (
           <section>
             <h2 className="font-display text-2xl font-semibold mb-6">Architecture</h2>
             <div className="panel hud overflow-hidden">

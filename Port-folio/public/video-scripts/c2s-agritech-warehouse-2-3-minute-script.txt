@@ -1,0 +1,11 @@
+Good business reporting does not begin with one more dashboard. It begins with one dependable definition of the business. In this agritech project, my goal was to turn operational data into a consistent historical model that teams could analyze without querying the source systems directly.
+
+The original challenge was consistency. Operational data was difficult to combine for historical reporting and cross-functional analysis. If each report interpreted the same entities differently, the organization could end up with dashboards that looked polished but disagreed on the underlying business meaning. I needed a reporting foundation that separated operational storage from analytical use.
+
+I designed that foundation in Azure Synapse Analytics using dimensional modeling. I organized the warehouse around facts and conformed dimensions, creating a star schema that made the analytical relationships explicit. The model provided a shared structure for history and reusable business analysis instead of making every report reconstruct those relationships independently.
+
+I also built an incremental loading pattern. Rather than treating every refresh as a full reload, the process used watermarks to identify and load changed data. SQL handled the warehouse transformations, and the curated model then fed a shared Power BI semantic layer. In Power BI, I created reusable measures so reports could use governed calculations instead of embedding separate versions of the same logic.
+
+Validation connected the whole solution. I performed source-to-report checks to make sure the data moving through the incremental load, warehouse model, semantic measures, and final reporting remained aligned. The available project record does not specify source products, row volumes, refresh duration, or a numerical business-impact result, so I do not claim those here. The verified result is the architecture itself: a star-schema warehouse with watermark-driven incremental loading and a Power BI consumption layer.
+
+The completed project gave agritech reporting a more stable foundation. Teams could analyze conformed historical data through decision-ready measures rather than reaching back into operational systems. My contribution covered both sides of the solution: data engineering in Synapse and the business-facing semantic model in Power BI.

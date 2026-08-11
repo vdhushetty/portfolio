@@ -1,0 +1,11 @@
+Truck platooning is often discussed as an aerodynamic opportunity: bring heavy-duty trucks closer together and the following vehicles may encounter less drag. But that creates a second engineering question. How does the changed airflow affect cooling and underhood thermal behavior? This project examined both sides of that trade-off.
+
+My task was to compare heavy-duty truck configurations across a recorded spacing range of thirty to sixty feet. I approached it as an academic simulation study, not as a claim about a production fleet. The goal was to create comparable cases that could reveal how spacing changes the surrounding flow field, pressure behavior, aerodynamic drag, and heat-related conditions.
+
+I began with three-dimensional vehicle geometry in SolidWorks. Preparing the CAD model was an important part of the analysis because the simulation depends on a usable representation of the truck and the relevant flow regions. From that geometry, I prepared the cases for computational fluid dynamics and thermal analysis in Ansys Fluent.
+
+The workflow had three clear stages: geometry, simulation, and comparison. After preparing the geometry, I configured the mesh and CFD boundary-condition setup, then evaluated the flow and thermal behavior. I parameterized the spacing configurations so the results could be compared across the thirty-to-sixty-foot range rather than treated as unrelated simulation runs.
+
+The analysis focused on a coupled engineering decision. Drag alone would not describe the full result, because closer spacing may also alter the airflow available around underhood components. I therefore reviewed flow, pressure, drag, and thermal results together. The project catalog does not record the exact drag reduction, temperature change, mesh size, turbulence model, boundary values, or validation error, so I do not add those numbers. What is verified is the evaluated spacing range and the combined drag-and-heat focus.
+
+The outcome was a structured aero-thermal comparison for truck platooning. My contribution covered CAD preparation, CFD boundary conditions, spacing-case design, and result analysis. More importantly, the project demonstrates how I frame simulation work: define a trade-off, keep cases comparable, and examine the connected physical effects before drawing a conclusion.

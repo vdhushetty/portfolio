@@ -31,7 +31,7 @@ export default function Privacy() {
             {
               title: "Verified recommendations",
               body:
-                "Recommendation submissions are invitation-only. Work email is private and stored for review; published cards show only consented identity, relationship, LinkedIn profile, recommendation text, and verification metadata. Authors may request correction or removal.",
+                "Recommendation submissions are open to the public but remain private until manual review. Verification email is stored privately; published cards show only consented identity, relationship, LinkedIn profile, optional original LinkedIn attestation link, recommendation text, and verification metadata. Authors may request correction or removal.",
             },
             {
               title: "Abuse prevention",
@@ -52,7 +52,7 @@ export default function Privacy() {
         </div>
 
         <p className="mt-10 font-mono text-xs text-faint">
-          Last updated August 8, 2026.
+          Last updated August 9, 2026.
         </p>
       </div>
     </main>

@@ -1,0 +1,11 @@
+In market prediction, a high score can be misleading if tomorrow's information quietly leaks into yesterday's training data. That is why this project was not only about testing algorithms. It was about comparing them through a time-aware process on a noisy, non-stationary problem.
+
+I worked with historical market data and a directional classification target. The main challenge was that time series do not behave like randomly interchangeable rows. Preprocessing, feature preparation, and evaluation all had to respect the order of observations so the models could be tested on held-out data rather than information they had effectively already seen.
+
+I engineered time-series features and built a common evaluation path for three different approaches: Random Forest, a Long Short-Term Memory network, and a Support Vector Machine. Random Forest represented a classical ensemble approach. LSTM represented a sequence-model approach. SVM offered a different decision-boundary formulation. Keeping the prediction target and evaluation framework consistent made their recorded results easier to compare.
+
+The pipeline moved from historical prices, through feature preparation, into the three candidate models, and finally into held-out evaluation. Python and pandas supported the data preparation, scikit-learn supported the classical models, and TensorFlow supported the LSTM work. The project catalog records accuracy as the comparison metric.
+
+The recorded results were seventy-eight percent accuracy for Random Forest, eighty-five percent for LSTM, and eighty-seven percent for SVM. In this evaluation, SVM produced the highest recorded accuracy. Those numbers are academic project results, not evidence of future market returns or a production trading strategy. The catalog does not specify the market instrument, date range, forecast horizon, exact feature set, split sizes, class balance, or transaction-cost assumptions, so I do not infer them.
+
+The project demonstrates my approach to model comparison: define one target, preserve the structure of the data, evaluate candidates consistently, and report the result with its limits. The useful outcome was not simply selecting SVM. It was building a time-aware comparison that made the recorded differences between Random Forest, LSTM, and SVM interpretable in one transparent study.

@@ -1,0 +1,11 @@
+For a mobile robot, reaching a goal is only half the problem. It must choose continuous control actions while avoiding obstacles, and every movement changes what it should do next. In this academic project, I trained a deep reinforcement-learning agent to handle that navigation problem inside a ROS Gazebo simulation.
+
+The environment represented the robot, its goal, and surrounding obstacles. The learning problem required more than memorizing a fixed route. The agent had to use its current state, select an action, observe the resulting transition and reward, and improve its policy through repeated simulated experience.
+
+I connected the ROS Gazebo environment to a Twin Delayed Deep Deterministic Policy Gradient agent, commonly called TD3, implemented with PyTorch. TD3 is suited to continuous-control tasks, which matched the navigation setting described in the project. The loop moved from simulation state, to the agent, to continuous actions, and then back through the next state and reward.
+
+Reward shaping was an important part of my contribution. I structured the learning signal around progress toward the goal and collision avoidance. That gave the agent feedback about the behavior the task required, rather than only a final success or failure signal. I then evaluated navigation across simulated scenarios to check whether the learned behavior could reach goals while avoiding obstacles.
+
+The catalog records a ninety-five percent navigation success rate and an evaluation reward of approximately two hundred thirty. These are recorded simulation results. They do not establish performance on a physical robot or in an unmodeled environment. The source does not specify the number of evaluation episodes, map layouts, sensor state, action bounds, reward coefficients, training duration, or uncertainty around the metrics, so I keep those details open.
+
+The completed project connected robotics simulation and deep reinforcement learning into one repeatable workflow: simulate, learn, and navigate. It shows my ability to integrate ROS and Gazebo with a PyTorch agent, reason about continuous control, shape a task-aligned reward, and evaluate the resulting policy with clearly bounded claims within the recorded simulation setting.

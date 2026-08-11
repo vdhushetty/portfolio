@@ -13,30 +13,30 @@ export const extras = {
   "d365-finance-operations-replication": {
     short: "D365 Real-Time Replication",
     arch: [
-      { title: "Source", note: "1,500+ tables", items: [{ logo: "d365", label: "D365 F&O" }] },
+      { title: "Source", note: "Finance & Operations", items: [{ logo: "d365", label: "D365 F&O" }] },
       {
-        title: "Lake",
-        in: "~15 min",
-        note: "CSV + changelog",
+        title: "Export",
+        in: "30 min",
+        note: "CSV landing",
         items: [
           { logo: "synapse", label: "Synapse Link" },
           { logo: "azure", label: "ADLS Gen2" },
         ],
       },
       {
-        title: "Process",
-        in: "rotate",
-        note: "parallel · exactly-once",
+        title: "Databricks",
+        in: "direct ingest",
+        note: "job compute · managed Delta",
         items: [
-          { logo: "databricks", label: "Auto Loader" },
-          { logo: "deltalake", label: "Delta" },
+          { logo: "databricks", label: "Managed tables" },
+          { logo: "deltalake", label: "DLT + CDC" },
         ],
       },
       {
-        title: "Watch",
-        in: "alerts",
-        note: "App Insights · Monitor",
-        items: [{ logo: "monitor", label: "Azure Monitor" }],
+        title: "Consume",
+        in: "serve",
+        note: "3 → 2 pipelines · −90% cost",
+        items: [{ logo: "powerbi", label: "Power BI" }],
         detailOnly: true,
       },
     ],

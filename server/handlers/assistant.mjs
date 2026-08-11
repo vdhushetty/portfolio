@@ -11,6 +11,7 @@ import { buildProfileContext } from "../profile.mjs";
 import { cleanText, enforceRateLimits } from "../security.mjs";
 import { mutateState, readState, StorageConfigurationError } from "../storage.mjs";
 import { generateProfileAnswer, moderateText } from "../openai.mjs";
+import { profileScopeResponse } from "../assistant-policy.mjs";
 
 export async function assistantHandler(req, res) {
   try {
@@ -37,15 +38,18 @@ export async function assistantHandler(req, res) {
         message: "You have reached today's assistant limit. Please return tomorrow or message Venkat.",
       },
     ]);
-    await enforceRateLimits("global", [
-      {
-        scope: "assistant-global-day",
-        limit: Number(process.env.AI_GLOBAL_DAILY_LIMIT || 250),
-        windowMs: 24 * 60 * 60 * 1000,
-        message: "The assistant has reached its daily capacity. Please message Venkat directly.",
-      },
-    ]);
-    await moderateText(question);
+    const scopedResponse = profileScopeResponse(question);
+    if (!scopedResponse) {
+      await enforceRateLimits("global", [
+        {
+          scope: "assistant-global-day",
+          limit: Number(process.env.AI_GLOBAL_DAILY_LIMIT || 250),
+          windowMs: 24 * 60 * 60 * 1000,
+          message: "The assistant has reached its daily capacity. Please message Venkat directly.",
+        },
+      ]);
+      await moderateText(question);
+    }
 
     const state = await readState();
     let conversationId = String(body.conversationId || "");
@@ -59,12 +63,14 @@ export async function assistantHandler(req, res) {
       .map((message) => message.role.toUpperCase() + ": " + message.text)
       .join("\n");
     const grounded = buildProfileContext(question);
-    const result = await generateProfileAnswer({
-      question,
-      context: { profile: grounded.profile, projectFacts: grounded.projectFacts },
-      history,
-      safetyIdentifier: visitor.fingerprint,
-    });
+    const result =
+      scopedResponse ||
+      (await generateProfileAnswer({
+        question,
+        context: { profile: grounded.profile, projectFacts: grounded.projectFacts },
+        history,
+        safetyIdentifier: visitor.fingerprint,
+      }));
 
     const now = new Date().toISOString();
     await mutateState((next) => {

@@ -1,0 +1,11 @@
+This project was a full re-platform from Azure Synapse to Azure Databricks, but the goal was not simply to move code. I needed to migrate the historical data, rebuild the ingestion and transformation pipelines, and prove that the new platform produced the same outputs before anything was cut over.
+
+The existing architecture used Synapse Link to bring Dynamics 365 data into Synapse pipelines and SQL Server. At the same time, newer workloads were already running on Databricks. That meant two platforms, duplicated engineering effort, duplicated compute, and operational knowledge split between two Spark environments.
+
+I approached the migration in phases. First, I backfilled the historical SQL Server data into Delta Lake so the Databricks target had the history required by downstream consumers. Then I rebuilt each Synapse pipeline as a native Databricks workflow rather than trying to carry the legacy orchestration forward unchanged.
+
+The rebuild also created an opportunity to improve execution. I used incremental ingestion with Auto Loader instead of continuing full reload patterns. Workloads ran on right-sized, autoscaling Databricks job clusters rather than always-on Synapse capacity. For the hottest Delta tables, the documented tuning included OPTIMIZE and Z-ORDER after the historical backfill.
+
+The most important part was validation. I ran the old and new paths side by side on live data. For every table, the cutover checks compared row counts and checksums between the Synapse output and the Databricks output. Pipelines moved one at a time, not in a big-bang release. Synapse remained warm as a rollback path until parity held for a complete cycle. Only then was the corresponding legacy pipeline switched off.
+
+My contribution covered the data backfill, workflow rebuild, incremental-ingestion design, cluster tuning, table optimization, dual-run validation, and staged cutover. The recorded result was a consolidation from two platforms to one, 100 percent output parity at cutover, and a 28 percent reduction in compute overhead after moving to job clusters. The larger outcome was a simpler lakehouse operating model: data and workflows lived together on Databricks, while downstream users received the same validated outputs they already depended on.

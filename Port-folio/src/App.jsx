@@ -170,6 +170,7 @@ export default function App() {
             </PageShell>
           }
         />
+        <Route path="/recommend" element={<RecommendationSubmit />} />
         <Route path="/recommend/:token" element={<RecommendationSubmit />} />
         <Route path="/recruiter" element={<Recruiter />} />
         <Route path="/privacy" element={<Privacy />} />

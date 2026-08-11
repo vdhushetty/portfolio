@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaLinkedin } from "react-icons/fa";
-import { FiCheckCircle, FiExternalLink, FiShield } from "react-icons/fi";
+import { FiCheckCircle, FiEdit3, FiExternalLink, FiShield } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { Reveal, SectionHeader } from "../components/ui";
 import { apiRequest } from "../lib/api";
@@ -30,6 +30,17 @@ function Card({ item }) {
       <blockquote className="mt-5 text-base leading-relaxed text-ink">
         “{item.quote}”
       </blockquote>
+      {item.linkedInAttestationUrl && (
+        <a
+          href={item.linkedInAttestationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-[#6fb7f1] hover:underline"
+        >
+          <FaLinkedin /> View the original LinkedIn attestation
+          <FiExternalLink aria-hidden="true" />
+        </a>
+      )}
       <p className="mt-4 text-xs text-faint">{item.relationship}</p>
       <div className="mt-5 border-t border-line pt-4">
         <div className="flex items-center gap-2 text-xs text-mint">
@@ -76,8 +87,31 @@ export default function Recommendations({ mode = "all" }) {
         index="// 07"
         kicker="Verified recommendations"
         title="What collaborators say."
-        sub="Recommendations are invitation-only, published with consent, and linked to a reviewed professional identity."
+        sub="Anyone who has worked with me can submit feedback. Nothing appears publicly until consent, identity, relationship, and LinkedIn links are reviewed."
       />
+
+      <Reveal className="mb-8">
+        <div className="panel flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-mint/30 bg-mint/5 text-mint">
+              <FiShield />
+            </span>
+            <div>
+              <h3 className="font-display text-lg font-semibold">Open submissions, moderated publication.</h3>
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-dim">
+                Submitters provide a private verification email and public LinkedIn
+                profile. They can also link the original LinkedIn recommendation or post.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate("/recommend")}
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-signal px-5 py-3 font-mono text-sm font-medium text-canvas"
+          >
+            <FiEdit3 /> Leave feedback
+          </button>
+        </div>
+      </Reveal>
 
       {items.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -98,9 +132,9 @@ export default function Recommendations({ mode = "all" }) {
                 Verification comes before publication.
               </h3>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-dim">
-                The recommendation collection is open by invitation. Each submission
-                requires consent, a LinkedIn profile, a private work email, and manual
-                relationship review. Nothing anonymous or unreviewed appears here.
+                Recommendations are open for submission. Each one requires consent, a
+                LinkedIn profile, a private verification email, and manual relationship
+                review. Nothing anonymous or unreviewed appears here.
               </p>
             </div>
           </div>

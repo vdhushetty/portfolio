@@ -272,6 +272,7 @@
     linear-gradient(to bottom, rgba(148, 166, 196, 0.06) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
 .grid-bg-drift {
   animation: drift 32s linear infinite;
 }
@@ -392,6 +393,302 @@
 }
 .accent-ai {
   --accent: var(--color-violet);
+}
+
+/* Architecture evolution: exact before/after diagrams and video storyboard frames. */
+.architecture-lane {
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  background: var(--color-surface);
+  box-shadow: var(--panel-shadow);
+}
+.architecture-node {
+  position: relative;
+  display: flex;
+  width: 124px;
+  min-height: 126px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 1px solid #2a3d5e;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  padding: 0.8rem;
+  text-align: center;
+  animation: architecture-node-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--step-index) * 70ms);
+}
+.architecture-node-icon {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #f3f6fb;
+  box-shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.8);
+}
+.architecture-node-removed {
+  border-color: rgba(244, 182, 93, 0.48);
+  background: linear-gradient(180deg, rgba(244, 182, 93, 0.08), rgba(255, 255, 255, 0.012));
+}
+.architecture-node-removed::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 50%;
+  width: 80%;
+  height: 1px;
+  background: rgba(244, 182, 93, 0.78);
+  transform: rotate(-11deg);
+  transform-origin: center;
+}
+.architecture-removed-tag {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgba(244, 182, 93, 0.12);
+  padding: 2px 5px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: #f4b65d;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.architecture-connector {
+  display: flex;
+  width: 56px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.architecture-connector span {
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: #8fa3c4;
+}
+.architecture-connector svg {
+  width: 54px;
+  height: 14px;
+}
+.architecture-connector path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.architecture-connector path:first-child {
+  stroke-dasharray: 5 6;
+  animation: flow 0.9s linear infinite;
+}
+.architecture-thumbnail,
+.video-story-stage {
+  background-color: #08111f;
+  background-image:
+    radial-gradient(circle at 65% 25%, rgba(63, 224, 255, 0.13), transparent 34%),
+    linear-gradient(to right, rgba(148, 166, 196, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 166, 196, 0.055) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
+}
+/* Thumbnail diagrams stay dark in both page themes, so their semantic
+   text and divider utilities need fixed dark-surface contrast tokens. */
+.architecture-thumbnail .text-ink {
+  color: #e8eefb;
+}
+.architecture-thumbnail .text-dim {
+  color: #b4c3da;
+}
+.architecture-thumbnail .text-faint {
+  color: #94a6c4;
+}
+.architecture-thumbnail .border-line {
+  border-color: #2a3d5e;
+}
+.architecture-thumbnail .bg-line {
+  background-color: #2a3d5e;
+}
+.architecture-refactor-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid rgba(244, 182, 93, 0.3);
+  border-radius: 999px;
+  background: rgba(244, 182, 93, 0.08);
+  padding: 3px 7px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: #f4b65d;
+  white-space: nowrap;
+}
+.architecture-logo-stack {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 2px solid #101b2f;
+  border-radius: 10px;
+  background: #f2f5fa;
+  box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.9);
+  animation: architecture-logo-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--step-index) * 80ms);
+}
+.architecture-logo-stack-old {
+  filter: saturate(0.65);
+  opacity: 0.72;
+}
+.architecture-logo-stack-new {
+  box-shadow: 0 0 0 1px rgba(63, 224, 163, 0.25), 0 8px 22px -10px rgba(63, 224, 163, 0.45);
+}
+.architecture-thumbnail-arrow {
+  animation: architecture-arrow 1.5s ease-in-out infinite;
+}
+.architecture-thumbnail-immersive {
+  display: flex;
+  min-height: 540px;
+  flex-direction: column;
+}
+.architecture-video-route {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 0 7.25rem;
+}
+.architecture-removed-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-bottom: 1.1rem;
+}
+.architecture-removed-strip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid rgba(244, 182, 93, 0.28);
+  border-radius: 999px;
+  background: rgba(244, 182, 93, 0.07);
+  padding: 0.3rem 0.55rem;
+  color: #d6a861;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-decoration: line-through;
+  opacity: 0;
+  animation: architecture-layer-remove 0.55s ease-out both;
+  animation-delay: calc(0.3s + var(--step-index) * 120ms);
+}
+.architecture-direct-path {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.architecture-direct-path svg {
+  width: clamp(24px, 5vw, 58px);
+  flex-shrink: 1;
+  fill: none;
+  stroke: #3fe0ff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.architecture-direct-path svg path:first-child {
+  stroke-dasharray: 6 6;
+  animation: flow 0.9s linear infinite;
+}
+.architecture-direct-node {
+  width: clamp(62px, 9vw, 92px);
+  text-align: center;
+  opacity: 0;
+  animation: architecture-node-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.65s + var(--step-index) * 120ms);
+}
+.architecture-direct-node span {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  place-items: center;
+  border: 1px solid rgba(63, 224, 255, 0.35);
+  border-radius: 12px;
+  background: #f3f6fb;
+  box-shadow: 0 0 26px -8px rgba(63, 224, 255, 0.75);
+}
+.architecture-direct-node p {
+  margin-top: 0.5rem;
+  color: #dce8fb;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1.25;
+}
+.architecture-video-route > p {
+  margin-top: 1rem;
+  color: #7790b5;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.video-scene-progress-active {
+  transform-origin: left;
+  animation: video-progress 4.5s linear both;
+}
+
+@keyframes architecture-node-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes architecture-logo-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-9px) scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes architecture-arrow {
+  0%, 100% {
+    opacity: 0.55;
+    transform: translateX(-2px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+}
+@keyframes architecture-layer-remove {
+  from {
+    opacity: 0;
+    transform: translateY(-7px) scale(0.96);
+  }
+  to {
+    opacity: 0.72;
+    transform: none;
+  }
+}
+@keyframes video-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 /* ============================================================

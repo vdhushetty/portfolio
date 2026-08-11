@@ -7,6 +7,7 @@ import { FaSatelliteDish, FaSeedling } from "react-icons/fa";
 
 /* Official SVGs downloaded into /public/logos */
 const FILE = {
+  d365: "/logos/dynamics365-finance-operations.svg",
   azure: "/logos/azure.svg",
   mssql: "/logos/mssql.svg",
   synapse: "/logos/synapse.svg",
@@ -47,19 +48,6 @@ const DeltaLake = ({ size }) => (
   </svg>
 );
 
-const D365 = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-    <defs>
-      <linearGradient id="d365g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#0B53CE" />
-        <stop offset="1" stopColor="#2898EE" />
-      </linearGradient>
-    </defs>
-    <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill="url(#d365g)" />
-    <text x="12" y="15.6" textAnchor="middle" fontFamily="'IBM Plex Mono',monospace" fontWeight="700" fontSize="7.4" fill="#fff">365</text>
-  </svg>
-);
-
 const Fabric = ({ size }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs>
@@ -73,7 +61,7 @@ const Fabric = ({ size }) => (
   </svg>
 );
 
-const DRAWN = { deltalake: DeltaLake, d365: D365, fabric: Fabric };
+const DRAWN = { deltalake: DeltaLake, fabric: Fabric };
 
 export default function TechLogo({ name, size = 24 }) {
   if (FILE[name]) return <img src={FILE[name]} alt="" width={size} height={size} style={{ objectFit: "contain" }} />;

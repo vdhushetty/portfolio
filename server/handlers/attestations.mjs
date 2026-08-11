@@ -29,6 +29,7 @@ function publicAttestation(item) {
     submittedAt: item.submittedAt,
     verifiedAt: item.verifiedAt,
     verificationMethod: item.verificationMethod,
+    linkedInAttestationUrl: item.linkedInAttestationUrl || null,
     consentConfirmed: true,
   };
 }
@@ -45,7 +46,7 @@ export async function attestationsHandler(req, res) {
       sendJson(res, 200, {
         items,
         policy:
-          "Published by invitation, with author consent and a reviewed professional identity.",
+          "Open submissions, published only with author consent and manual identity and relationship review.",
       });
       return;
     }
@@ -54,15 +55,27 @@ export async function attestationsHandler(req, res) {
     await enforceRateLimits(visitor.fingerprint, [
       {
         scope: "attestation-day",
-        limit: 3,
+        limit: 2,
         windowMs: 24 * 60 * 60 * 1000,
         message: "Too many recommendation submissions were attempted today.",
       },
     ]);
+    await enforceRateLimits("global", [
+      {
+        scope: "attestation-global-day",
+        limit: Number(process.env.ATTESTATION_GLOBAL_DAILY_LIMIT || 50),
+        windowMs: 24 * 60 * 60 * 1000,
+        message: "Recommendation submissions are temporarily at capacity.",
+      },
+    ]);
     const body = await readJson(req, 18_000);
-    const invite = verifyInviteToken(body.token);
+    if (body.website) {
+      throw new HttpError(400, "VALIDATION_ERROR", "The submission could not be accepted.");
+    }
+    const invite = body.token ? verifyInviteToken(body.token) : null;
     const email = cleanEmail(body.workEmail);
-    if (invite.emailHash && invite.emailHash !== privateEmailHash(email)) {
+    const emailHash = privateEmailHash(email);
+    if (invite?.emailHash && invite.emailHash !== emailHash) {
       throw new HttpError(
         400,
         "INVITE_EMAIL_MISMATCH",
@@ -80,7 +93,8 @@ export async function attestationsHandler(req, res) {
     const now = new Date().toISOString();
     const attestation = {
       id: crypto.randomUUID(),
-      inviteId: invite.id,
+      inviteId: invite?.id || null,
+      submissionChannel: invite ? "invitation" : "public",
       name: cleanText(body.name, { min: 2, max: 100, field: "Name" }),
       role: cleanText(body.role, { min: 2, max: 120, field: "Role" }),
       company: cleanText(body.company, { min: 2, max: 120, field: "Company" }),
@@ -90,7 +104,10 @@ export async function attestationsHandler(req, res) {
         field: "Working relationship",
       }),
       linkedInUrl: cleanLinkedIn(body.linkedInUrl),
-      workEmailHash: privateEmailHash(email),
+      linkedInAttestationUrl: body.linkedInAttestationUrl
+        ? cleanLinkedIn(body.linkedInAttestationUrl)
+        : null,
+      workEmailHash: emailHash,
       privateWorkEmail: email,
       quote: cleanText(body.quote, {
         min: 60,
@@ -105,12 +122,26 @@ export async function attestationsHandler(req, res) {
     };
 
     await mutateState((state) => {
-      const storedInvite = state.attestationInvites[invite.id];
-      if (!storedInvite || storedInvite.revokedAt || storedInvite.usedAt) {
-        throw new HttpError(409, "INVITE_ALREADY_USED", "This invitation is no longer available.");
+      const duplicate = state.attestations.find(
+        (entry) =>
+          entry.workEmailHash === emailHash &&
+          ["pending_review", "approved"].includes(entry.status)
+      );
+      if (duplicate) {
+        throw new HttpError(
+          409,
+          "ALREADY_SUBMITTED",
+          "A recommendation from this email is already pending or published."
+        );
       }
-      storedInvite.usedAt = now;
-      storedInvite.attestationId = attestation.id;
+      if (invite) {
+        const storedInvite = state.attestationInvites[invite.id];
+        if (!storedInvite || storedInvite.revokedAt || storedInvite.usedAt) {
+          throw new HttpError(409, "INVITE_ALREADY_USED", "This invitation is no longer available.");
+        }
+        storedInvite.usedAt = now;
+        storedInvite.attestationId = attestation.id;
+      }
       state.attestations.push(attestation);
     });
     sendJson(res, 201, {

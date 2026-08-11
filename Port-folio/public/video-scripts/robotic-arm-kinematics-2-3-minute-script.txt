@@ -1,0 +1,11 @@
+A robotic arm has to solve the same geometry in two directions. Given the joint angles, where will the end effector be? Given a requested position, which joint configuration can reach it? In this project, I implemented both forward and inverse kinematics for a five-degree-of-freedom robotic arm in MATLAB.
+
+The challenge is that the mapping is nonlinear. Each joint changes the coordinate frame for the links that follow it, and the inverse problem may admit more than one possible configuration. A useful solution therefore needs a clear representation of the transformation chain and a way to keep requested positions within the arm's geometric constraints.
+
+I modeled the five joints and their link transformations with matrices. For forward kinematics, the input was the set of joint states. I composed the transformations along the chain to calculate the resulting end-effector pose, including position and angle. This created the direct mapping from joint configuration to tool pose.
+
+For inverse kinematics, I worked in the opposite direction. Starting from a requested position, I solved for feasible joint configurations under the modeled geometry. I also evaluated the workspace so the calculations could be considered in relation to positions the arm could reach. My contribution covered the transformation model, forward pose calculation, inverse solution calculation, and workspace evaluation.
+
+The catalog verifies that the arm had five degrees of freedom and that forward kinematics was implemented and evaluated. It also records the inverse-kinematics work. It does not provide the link lengths, joint limits, exact orientation convention, numerical solution method, test poses, position error, or physical-hardware validation. I therefore do not claim a particular accuracy or real-arm performance.
+
+The completed project provided a MATLAB framework for reasoning about a five-degree-of-freedom arm from both directions: joints to pose and requested position back to joints. It demonstrates my grounding in transformation matrices, nonlinear robotics geometry, feasibility constraints, and workspace reasoning. More broadly, it shows how I turn a mechanical configuration into a computational model that can be inspected and evaluated.

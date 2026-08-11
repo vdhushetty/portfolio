@@ -1,0 +1,11 @@
+In a clinical classification study, one accuracy number is not the whole story. The data must be prepared consistently, candidate models must be compared under the same conditions, and the kinds of errors matter. This project applied that disciplined approach to heart-disease prediction using clinical tabular features.
+
+The challenge was to build a reproducible classification workflow without treating accuracy as the only evidence. Clinical tabular data can require careful preprocessing, and a headline score can hide different error types. My goal was therefore to compare models consistently, identify the strongest recorded estimator, and examine how the model arrived at its classifications.
+
+I prepared the dataset with Python and pandas and evaluated candidate classifiers through scikit-learn under a consistent split. The architecture was straightforward but important: clinical features entered preprocessing, the prepared data entered the classifier comparison, and held-out observations supported evaluation. This common path kept the recorded results comparable.
+
+Random Forest produced the strongest result recorded in the catalog. I reviewed its feature contribution and considered classification-error trade-offs rather than ending the analysis at one score. That part of the work was important because it framed the model as an analytical study whose behavior needed interpretation, not as a black-box medical conclusion.
+
+The catalog records an accuracy of eighty-five percent for Random Forest. This is an academic project result, not a clinical diagnosis claim or evidence that the model is ready for medical use. The available source does not name the dataset, sample size, feature list, class balance, compared classifiers, split ratio, precision, recall, or confusion-matrix values. I do not invent those details, and I would want them before making a stronger assessment.
+
+The outcome was a reproducible machine-learning comparison with Random Forest as the strongest recorded model. The project shows my ability to prepare tabular data, compare classifiers consistently, inspect feature contribution, and communicate the limits of a metric. For me, that last part is essential: a model result becomes useful only when its evaluation context and uncertainty remain visible.

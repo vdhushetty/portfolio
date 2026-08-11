@@ -1,0 +1,11 @@
+This project addressed a single point of failure in the Dynamics 365 ingestion path. After Export to Data Lake was retired, Synapse Link had become the only bridge carrying D365 change data into the lakehouse. If that connector degraded, file arrivals slowed, data freshness stalled, and every dependent report aged with it.
+
+I designed the ingestion layer with two paths instead of one. Synapse Link remained the primary CDC export, while Microsoft Fabric Link was configured in parallel as the fallback. Both paths landed data into a consistent ADLS Gen2 layout, so the downstream lakehouse did not need a different contract depending on which connector was active.
+
+The landing structure was also designed for Databricks Auto Loader pickup without file-listing overhead. I tuned export frequency by table group so the hotter tables could refresh more frequently than colder data, while preserving the common layout used by downstream processing.
+
+The switching logic was driven by health signals rather than a person watching a dashboard. Probes tracked export lag and file-arrival cadence. When lag remained beyond the configured threshold, the fallback logic changed the active path automatically. That meant ingestion could continue through Fabric Link without waiting for a manual operational response.
+
+A path switch can create an overlap window, so continuity alone was not enough. I used merge keys to deduplicate records delivered around the switchover. Both connectors could therefore converge on the same lakehouse tables without double-loading the overlap. Once the primary path became healthy, the orchestration allowed it to resume automatically.
+
+My contribution covered the Synapse Link configuration, the parallel Fabric Link path, the shared ADLS layout, export-frequency tuning, health probes, automatic path selection, and merge-based deduplication. The recorded result was two ingestion paths—primary plus fallback—with automatic failover and no manual intervention required for the switch. The architectural outcome was a more resilient D365 feed: downstream consumers continued to receive a consistent Delta-oriented layout, while connector health and recovery were handled inside the ingestion design instead of being pushed onto reporting teams.

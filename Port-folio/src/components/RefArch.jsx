@@ -39,6 +39,7 @@ const LINE = "#2a3d5e";
 const MONO = "'IBM Plex Mono', monospace";
 
 const FILE_LOGOS = {
+  d365: "/logos/dynamics365-finance-operations.svg",
   azure: "/logos/azure.svg",
   mssql: "/logos/mssql.svg",
   synapse: "/logos/synapse.svg",
@@ -77,13 +78,6 @@ function NodeIcon({ name, x, y, size }) {
       <g transform={`translate(${x},${y}) scale(${size / 24})`}>
         <path d="M12 2.8 L21.4 19.6 H2.6 Z" fill="none" stroke="#00ADD4" strokeWidth="2" strokeLinejoin="round" />
         <path d="M12 9.6 L16.4 17.4 H7.6 Z" fill="#00ADD4" />
-      </g>
-    );
-  if (name === "d365")
-    return (
-      <g transform={`translate(${x},${y}) scale(${size / 24})`}>
-        <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill="#0B53CE" />
-        <text x="12" y="15.6" textAnchor="middle" fontFamily={MONO} fontWeight="700" fontSize="7.4" fill="#fff">365</text>
       </g>
     );
   if (name === "fabric")

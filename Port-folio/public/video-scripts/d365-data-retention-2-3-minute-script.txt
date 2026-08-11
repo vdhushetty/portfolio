@@ -1,0 +1,11 @@
+This project solved a data-retention gap between Dynamics 365 and long-range analytics. D365 BYOD records were subject to scheduled purge rules, while finance, audit, and reporting still needed access to the older history. Once those rows disappeared from the source, dashboards and compliance queries could no longer rely on D365 alone.
+
+The portfolio case study also records the retirement of Export to Data Lake as part of the platform context. I therefore designed a Databricks-based retention layer that captured the required BYOD data before each purge window and preserved it in Delta Lake.
+
+The capture was incremental rather than a sequence of full snapshots. For every entity, a watermark tracked the most recent change already retained. A scheduled pre-purge sweep read only the next delta and appended it to the archive. That kept recurring work focused on new or changed records and avoided repeatedly copying the complete history.
+
+I organized the Delta archive by entity and date, so an audit or analytical query could prune unrelated partitions instead of scanning everything. Schema evolution absorbed source changes as the retained structures developed. Each captured batch was logged, creating an audit trail for what entered the archive and when. The data remained queryable through Unity Catalog after the corresponding records had been deleted from D365.
+
+Because this was append-mostly historical data, I also tuned the maintenance pattern for that access profile. The documented optimizations include compaction and vacuum policies designed for cold retained data. Together with incremental capture and partition pruning, that reduced storage cost by 20 percent compared with the prior approach.
+
+My contribution was the full retention design: coordinating the capture ahead of purge schedules, implementing per-entity watermarks and checkpointed incremental jobs, handling schema change, designing the partitioned Delta archive, and logging every retained batch. The recorded outcome was zero history lost after the purge windows and continued access for analytics and audit, even when D365 no longer held the original rows. The value of this project was not just storing more data. It created a controlled, queryable historical record that was independent of the source system’s operational retention limit.

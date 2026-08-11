@@ -42,7 +42,7 @@ export function cleanLinkedIn(value) {
     throw new HttpError(400, "VALIDATION_ERROR", "Enter a valid LinkedIn URL.");
   }
   if (url.protocol !== "https:" || !/(^|\.)linkedin\.com$/i.test(url.hostname)) {
-    throw new HttpError(400, "VALIDATION_ERROR", "Use a linkedin.com profile URL.");
+    throw new HttpError(400, "VALIDATION_ERROR", "Use a linkedin.com URL.");
   }
   return url.toString();
 }

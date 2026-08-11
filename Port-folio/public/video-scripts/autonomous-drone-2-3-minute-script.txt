@@ -1,0 +1,11 @@
+A visual detection does not fly a drone. The system has to turn noisy camera frames into control decisions quickly enough to matter, while keeping those commands bounded. In this project, I built that perception-to-control loop for a DJI Tello drone using Python and OpenCV.
+
+The Tello camera stream was the observation layer. Each frame had to support target detection, tracking, and gesture interpretation. The challenge was continuity: an individual detection is only one moment, while autonomous behavior depends on following the target and translating changing image-space information into stable commands over time.
+
+I connected the live video path to an OpenCV processing loop. The loop detected and tracked the target, interpreted gestures, and measured image-space error. That error represented how the target differed from the desired position in the frame. I then converted it into flight-control commands and applied safety bounds before sending the commands through the DJI Tello SDK.
+
+The architecture had three stages: observe, perceive, and control. The drone camera supplied frames. Python and OpenCV handled detection, gesture recognition, and tracking. The control layer translated perception output into bounded autonomous flight behavior. Connecting those stages was my core contribution, along with the real-time processing, tracking, gesture-control, and command logic.
+
+The catalog records a ninety percent gesture-recognition rate, an eighty percent detection rate, and a ninety-five percent tracking rate. These are recorded academic project metrics. The source does not identify the gesture vocabulary, evaluation sample size, test environment, frame rate, detection model, tracking algorithm, command limits, or statistical uncertainty. I therefore present the values as recorded evaluation results, not as guarantees for every flight condition.
+
+The completed project demonstrated a full vision-guided drone-control path rather than an isolated computer-vision notebook. A camera observation became perception, perception became bounded commands, and those commands drove autonomous behavior in one integrated implementation. It shows how I combine computer vision and robotics: preserve a clear loop from sensor input to control output, evaluate each major capability, and keep the final command stage constrained.
